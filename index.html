@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>雨婷 | 紫色宇宙主页</title>
+    <title>雨婷 | 紫色星云</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
@@ -33,6 +33,60 @@
             position: relative;
             overflow-x: hidden;
         }
+        /* 弹窗遮罩层 */
+        .pop-mask {
+            position: fixed;
+            inset: 0;
+            background: rgba(0,0,0,0.85);
+            z-index: 99999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        /* 弹窗主体 */
+        .pop-box {
+            background: var(--card-strong-bg);
+            border: 1px solid rgba(208,168,255,0.4);
+            border-radius: 24px;
+            padding: 40px 30px;
+            max-width: 520px;
+            width: 100%;
+            text-align: center;
+            box-shadow: 0 0 60px rgba(104,28,200,0.5);
+            animation: popShow 0.4s ease;
+        }
+        @keyframes popShow {
+            from {opacity:0; transform: scale(0.9);}
+            to {opacity:1; transform: scale(1);}
+        }
+        .pop-text {
+            font-size: 20px;
+            line-height: 1.8;
+            margin-bottom: 36px;
+            color: var(--space-glow);
+        }
+        .pop-btn-group {
+            display: flex;
+            gap: 20px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .pop-btn {
+            padding: 12px 32px;
+            font-size: 18px;
+            border-radius: 999px;
+            border: 1px solid var(--space-light-purple);
+            background: transparent;
+            color: var(--space-glow);
+            cursor: pointer;
+            transition: var(--transition-base);
+        }
+        .pop-btn:hover {
+            background: linear-gradient(135deg, var(--space-main-purple), var(--space-dark-purple));
+            transform: translateY(-3px);
+            box-shadow: 0 0 20px rgba(160,90,255,0.4);
+        }
         /* 全局星空粒子叠加层，叠加在星云背景上方增加层次感 */
         body::before {
             content: "";
@@ -51,7 +105,7 @@
             background-size: 400px 400px;
             animation: starFlow 40s linear infinite;
             z-index: -2;
-            opacity: 0.55;
+            opacity: 0.45;
         }
         body::after {
             content: "";
@@ -69,7 +123,7 @@
             background-size: 250px 250px;
             animation: starTwinkle 10s ease-in-out infinite alternate;
             z-index: -1;
-            opacity: 0.6;
+            opacity: 0.5;
         }
         .nebula-layer {
             display: none; /* 废弃原有半透明星云层，改用完整背景图 */
@@ -89,19 +143,19 @@
         }
         @keyframes cardFloat {
             0% { transform: translateY(0px); }
-            50% { transform: translateY(-6px); }
+            50% { transform: translateY(-8px); }
             100% { transform: translateY(0px); }
         }
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
+            from { opacity: 0; transform: translateY(30px); }
             to { opacity: 1; transform: translateY(0); }
         }
         @keyframes carouselFade {
-            0% { opacity: 0; }
-            8% { opacity: 1; }
-            25% { opacity: 1; }
-            33% { opacity: 0; }
-            100% { opacity: 0; }
+            0% { opacity: 0; transform: scale(0.96); }
+            8% { opacity: 1; transform: scale(1); }
+            25% { opacity: 1; transform: scale(1); }
+            33% { opacity: 0; transform: scale(0.96); }
+            100% { opacity: 0; transform: scale(0.96); }
         }
         header {
             position: fixed;
@@ -167,10 +221,10 @@
             min-height: calc(100vh - 90px);
             padding: 40px 20px;
             display: none;
-            animation: fadeInUp 0.5s ease forwards;
+            animation: fadeInUp 0.6s ease forwards;
             position: relative;
         }
-        /* 给每个页面添加柔和暗遮罩，保证卡片文字清晰 */
+        /* 全局页面遮罩 */
         section::before {
             content: "";
             position: absolute;
@@ -178,6 +232,10 @@
             background: rgba(4, 1, 12, 0.45);
             z-index: 1;
             border-radius: 12px;
+        }
+        /* 首页单独降低遮罩透明度，完整显示星云背景 */
+        #home::before {
+            background: rgba(4, 1, 12, 0.32);
         }
         section.active {
             display: block;
@@ -191,87 +249,150 @@
             position: relative;
             z-index: 2;
         }
+        /* 首页标题通用样式 */
         .title {
             text-align: center;
-            font-size: 36px;
-            margin-bottom: 40px;
+            font-size: 32px;
+            margin-bottom: 32px;
+            margin-top: 10px;
             color: var(--space-light-purple);
+            opacity: 0.9;
+            font-weight: 500;
+            letter-spacing: 4px;
             animation: fadeInUp 0.6s ease;
+        }
+        /* ========== 作品页专属固定标题样式 ========== */
+        #works .title {
+            position: sticky;
+            top: 100px;
+            /* 替换：淡紫半透明底色，和整体紫色星云统一，不发黑 */
+            background: linear-gradient(90deg, rgba(80, 20, 160, 0.35), rgba(120, 40, 200, 0.25));
+            padding: 16px 0;
+            margin: 0 auto 20px;
+            width: calc(100% - 40px);
+            border-radius: 12px;
+            backdrop-filter: blur(8px);
+            z-index: 10;
+            /* 加细紫边框，和页面卡片风格统一 */
+            border: 1px solid rgba(208,168,255,0.25);
+        }
+        /* 作品滚动容器：仅作品区域滚动 */
+        .works-scroll-wrap {
+            max-height: calc(100vh - 220px);
+            overflow-y: auto;
+            padding-right: 8px;
+        }
+        /* 美化滚动条 */
+        .works-scroll-wrap::-webkit-scrollbar {
+            width: 6px;
+        }
+        .works-scroll-wrap::-webkit-scrollbar-track {
+            background: rgba(208,168,255,0.1);
+            border-radius: 10px;
+        }
+        .works-scroll-wrap::-webkit-scrollbar-thumb {
+            background: var(--space-light-purple);
+            border-radius: 10px;
         }
         /* 首页左右分栏容器 */
         .home-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
             gap: 40px;
-            align-items: center;
-            margin-top: 60px;
+            align-items: stretch;
+            margin-top: 40px;
         }
-        /* 左侧个人介绍卡片 */
+        /* 左侧个人介绍卡片全面优化 */
         .info-card {
             background: var(--card-strong-bg);
-            padding: 36px;
-            border-radius: 24px;
-            border: 1px solid rgba(208,168,255,0.3);
-            box-shadow: 0 0 30px rgba(104,28,200,0.25);
+            padding: 40px;
+            border-radius: 28px;
+            border: 1px solid rgba(208,168,255,0.35);
+            box-shadow:
+                0 0 35px rgba(104,28,200,0.28),
+                inset 0 0 40px rgba(180, 100, 255, 0.05);
             animation: cardFloat 7s ease-in-out infinite;
             text-align: left;
+            transition: var(--transition-base);
+        }
+        .info-card:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow:
+                0 0 45px rgba(104,28,200,0.35),
+                inset 0 0 40px rgba(180, 100, 255, 0.08);
         }
         .info-card h2 {
-            font-size: 42px;
+            font-size: 30px;
+            text-align: center;
             color: #fff;
-            margin-bottom: 24px;
-            border-bottom: 1px solid rgba(208,168,255,0.25);
-            padding-bottom: 12px;
+            margin-bottom: 26px;
+            border-bottom: 1px solid rgba(208,168,255,0.3);
+            padding-bottom: 14px;
+            background: linear-gradient(90deg, #fff, var(--space-light-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+        .info-divider {
+            width: 100%;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, rgba(208,168,255,0.35), transparent);
+            margin: 20px 0;
         }
         .info-item {
-            margin-bottom: 16px;
-            font-size: 18px;
-            line-height: 1.9;
+            margin-bottom: 14px;
+            font-size: 17px;
+            line-height: 1.8;
+            display: flex;
+            align-items: center;
         }
         .info-label {
             color: var(--space-light-purple);
             font-weight: bold;
             display: inline-block;
-            min-width: 100px;
-        }
-        .info-desc {
-            margin-top: 20px;
-            padding-top: 20px;
-            border-top: 1px solid rgba(208,168,255,0.25);
-            color: var(--text-gray);
-            font-size: 17px;
-            line-height: 2;
+            min-width: 110px;
         }
         .tag-list {
-            margin-top: 30px;
+            margin-top: 32px;
             display: flex;
-            gap: 12px;
+            gap: 14px;
             flex-wrap: wrap;
         }
         .tag {
-            padding: 6px 16px;
+            padding: 7px 18px;
             background: var(--card-bg);
-            border: 1px solid rgba(200,150,255,0.25);
-            border-radius: 30px;
+            border: 1px solid rgba(200,150,255,0.28);
+            border-radius: 32px;
             transition: var(--transition-base);
             animation: cardFloat 6s ease-in-out infinite;
+            cursor: default;
         }
         .tag:nth-child(2n) { animation-delay: -2s; }
         .tag:nth-child(3n) { animation-delay: -4s; }
         .tag:hover {
-            background: var(--card-strong-bg);
-            transform: translateY(-4px) scale(1.03);
+            background: linear-gradient(135deg, rgba(104,28,200,0.3), rgba(160, 70, 240, 0.2));
+            border-color: var(--space-light-purple);
+            transform: translateY(-4px) scale(1.04);
         }
-        /* 右侧轮播容器 */
+        /* 右侧轮播容器优化星云光晕 */
         .carousel-wrap {
-            border-radius: 24px;
+            border-radius: 28px;
             overflow: hidden;
-            border: 2px solid rgba(208,168,255,0.4);
-            box-shadow: 0 0 40px rgba(104,28,200,0.35);
+            border: 2px solid rgba(208,168,255,0.45);
+            box-shadow:
+                0 0 50px rgba(104,28,200,0.4),
+                0 0 80px rgba(130, 40, 220, 0.15);
             animation: cardFloat 7s ease-in-out infinite;
             position: relative;
             aspect-ratio: 4 / 5;
             width: 100%;
+            transition: var(--transition-base);
+        }
+        .carousel-wrap:hover {
+            transform: translateY(-4px) scale(1.01);
+            box-shadow:
+                0 0 60px rgba(104,28,200,0.48),
+                0 0 100px rgba(130, 40, 220, 0.2);
         }
         .carousel-item {
             position: absolute;
@@ -287,15 +408,19 @@
             height: 100%;
             object-fit: cover;
             display: block;
+            transition: transform 8s ease;
+        }
+        .carousel-item:hover img {
+            transform: scale(1.06);
         }
         .carousel-item:nth-child(1) { animation-delay: 0s; }
         .carousel-item:nth-child(2) { animation-delay: -6s; }
         .carousel-item:nth-child(3) { animation-delay: -12s; }
         .carousel-item:nth-child(4) { animation-delay: -18s; }
-        /* 作品板块 */
+        /* 作品板块：单张独占一行，左图右文 */
         .works-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            display: flex;
+            flex-direction: column;
             gap: 24px;
         }
         .work-card {
@@ -305,38 +430,129 @@
             overflow: hidden;
             transition: var(--transition-base);
             animation: cardFloat 7s ease-in-out infinite;
+            /* 一行两栏：图片 + 文字 */
+            display: grid;
+            grid-template-columns: 320px 1fr;
+            align-items: center;
+            gap: 24px;
+            padding: 20px;
         }
         .work-card:nth-child(even) { animation-delay: -3s; }
         .work-card:hover {
-            transform: translateY(-8px) scale(1.02);
+            transform: translateY(-8px) scale(1.01);
             border-color: var(--space-light-purple);
         }
         .work-card img {
             width: 100%;
-            height: 200px;
+            height: 240px;
             object-fit: cover;
             background: #0c0620;
+            border-radius: 10px;
             transition: var(--transition-base);
         }
         .work-card:hover img {
-            transform: scale(1.08);
+            transform: scale(1.05);
         }
         .work-text {
-            padding: 16px;
+            padding: 0 10px;
         }
         .work-text h3 {
-            margin-bottom: 8px;
+            margin-bottom: 12px;
             color: var(--space-light-purple);
+            font-size: 22px;
         }
-        /* 视频板块 */
+        .work-text p {
+            font-size: 17px;
+            color: var(--text-gray);
+            line-height: 1.7;
+        }
+        /* ========== 安利视频页面全新布局（参考图样式） ========== */
+        /* 顶部筛选栏 */
+        .video-filter-bar {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            margin-bottom: 24px;
+            flex-wrap: wrap;
+            background: var(--card-bg);
+            padding: 12px 16px;
+            border-radius: 12px;
+            border: 1px solid rgba(208,168,255,0.2);
+            backdrop-filter: blur(6px);
+        }
+        .video-filter-bar select,
+        .video-filter-bar label {
+            font-size: 16px;
+            color: var(--text-white);
+        }
+        .video-filter-bar select {
+            background: #0c0620;
+            border: 1px solid rgba(208,168,255,0.25);
+            padding: 6px 10px;
+            border-radius: 8px;
+            color: var(--text-white);
+            min-width: 140px;
+        }
+        /* 瀑布流网格布局 */
+        .video-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+        /* 视频卡片 仿参考图样式 */
+        .video-item {
+            background: var(--card-bg);
+            border: 1px solid rgba(200,150,255,0.18);
+            border-radius: 16px;
+            overflow: hidden;
+            transition: var(--transition-base);
+            animation: cardFloat 7s ease-in-out infinite;
+            position: relative;
+        }
+        .video-item:nth-child(even) { animation-delay: -3s; }
+        .video-item:hover {
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--space-light-purple);
+        }
+        .video-thumb {
+            width: 100%;
+            aspect-ratio: 4 / 3;
+            object-fit: cover;
+            display: block;
+        }
+        .video-card-text {
+            padding: 16px;
+        }
+        .video-card-title {
+            font-size: 16px;
+            color: var(--space-glow);
+            margin-bottom: 6px;
+            line-height: 1.4;
+        }
+        .video-card-desc {
+            font-size: 13px;
+            color: var(--text-gray);
+            line-height: 1.5;
+        }
+        /* 右下角链接小图标 */
+        .video-link-icon {
+            position: absolute;
+            right: 12px;
+            bottom: 12px;
+            width: 24px;
+            height: 24px;
+            opacity: 0.6;
+        }
+        /* 添加视频输入框模块 */
         .video-input-box {
-            max-width: 800px;
-            margin: 0 auto 40px;
+            max-width: 100%;
+            margin: 0 auto 30px;
             background: var(--card-strong-bg);
-            padding: 24px;
+            padding: 20px;
             border-radius: 16px;
             border: 1px solid rgba(200,150,255,0.2);
             transition: var(--transition-base);
+            backdrop-filter: blur(6px);
         }
         .video-input-box input {
             width: 100%;
@@ -369,26 +585,6 @@
         }
         .btn:active {
             transform: translateY(1px);
-        }
-        .video-list {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
-            gap: 24px;
-        }
-        .video-item {
-            background: #0c0620;
-            border-radius: 14px;
-            overflow: hidden;
-            border: 1px solid rgba(200,150,255,0.15);
-            transition: var(--transition-base);
-        }
-        .video-item:hover {
-            transform: scale(1.02);
-        }
-        .video-item iframe {
-            width: 100%;
-            height: 200px;
-            border: none;
         }
         /* 留言页面布局 */
         .msg-wrap {
@@ -541,9 +737,10 @@
         }
         .empty-tip {
             text-align: center;
-            padding: 40px 0;
+            padding: 60px 0;
             color: var(--text-gray);
             font-size: 17px;
+            grid-column: 1 / -1;
         }
         footer {
             text-align: center;
@@ -560,13 +757,33 @@
         @media (max-width:992px) {
             .home-row {
                 grid-template-columns: 1fr;
-                gap: 30px;
+                gap: 36px;
+                margin-top: 30px;
+            }
+            .info-card, .carousel-wrap {
+                border-radius: 24px;
             }
             .msg-wrap {
                 grid-template-columns: 1fr;
             }
             .msg-left {
                 position: static;
+            }
+            /* 移动端作品卡片上下布局 */
+            .work-card {
+                grid-template-columns: 1fr;
+            }
+            /* 移动端标题高度适配 */
+            #works .title {
+                top: 85px;
+            }
+            .works-scroll-wrap {
+                max-height: calc(100vh - 200px);
+            }
+            /* 视频筛选栏移动端 */
+            .video-filter-bar {
+                flex-direction: column;
+                align-items: flex-start;
             }
         }
         @media (max-width:768px) {
@@ -583,17 +800,49 @@
                 grid-template-columns: 1fr;
             }
             .title {
-                font-size: 28px;
+                font-size: 26px;
+                letter-spacing: 2px;
+            }
+            .info-card h2 {
+                font-size: 24px;
+            }
+            .info-card {
+                padding: 28px;
+            }
+            .info-item {
+                font-size: 16px;
+            }
+            .pop-text {
+                font-size: 17px;
+            }
+            .pop-btn {
+                padding: 10px 24px;
+                font-size: 16px;
+            }
+            .work-text h3 {
+                font-size: 20px;
             }
         }
     </style>
 </head>
 <body>
+    <!-- 进入引导弹窗 -->
+    <div class="pop-mask" id="entryPop">
+        <div class="pop-box">
+            <div class="pop-text">
+                亲爱的雨婷，你永远是最棒最棒最棒的，屏幕前的你愿意和我一起来看看这个雨婷吗
+            </div>
+            <div class="pop-btn-group">
+                <button class="pop-btn" id="btn1">非常愿意</button>
+                <button class="pop-btn" id="btn2">超级愿意</button>
+            </div>
+        </div>
+    </div>
     <!-- 银河星云底层动画层（已隐藏，改用全局背景图） -->
     <div class="nebula-layer"></div>
     <header>
         <div class="nav-box">
-            <div class="logo">雨婷 Sweet宇宙主页</div>
+            <div class="logo">雨婷 紫色星云</div>
             <ul class="nav-menu">
                 <li><a href="#home" class="nav-link active" data-target="home">首页</a></li>
                 <li><a href="#works" class="nav-link" data-target="works">作品</a></li>
@@ -608,37 +857,53 @@
             <h2 class="title">首页</h2>
             <!-- 左右分栏容器：左资料 右轮播 -->
             <div class="home-row">
-                <!-- 左侧个人介绍卡片 -->
+                <!-- 左侧【月光石 新粉指南】卡片 -->
                 <div class="info-card">
-                    <h2>岳雨婷 · Sweet</h2>
+                    <h2>【月光石 新粉指南】</h2>
+                    <h3 style="text-align:center;margin-bottom:12px;color:var(--space-light-purple);font-size:18px;">岳雨婷个人简介</h3>
+
                     <div class="info-item">
-                        <span class="info-label">姓名</span>
+                        <span class="info-label">✐本名</span>
                         <span>岳雨婷</span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">性别</span>
-                        <span>女</span>
+                        <span class="info-label">✐祖籍</span>
+                        <span>福建.霞浦</span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">出生日期</span>
-                        <span>可自行修改日期</span>
+                        <span class="info-label">✐长居地</span>
+                        <span>江苏.苏州</span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">爱好</span>
-                        <span>摄影、追星、记录日常、文案创作</span>
+                        <span class="info-label">✐出生日期</span>
+                        <span>2001年6月22日</span>
                     </div>
                     <div class="info-item">
-                        <span class="info-label">标签</span>
-                        <span>温柔浪漫｜星云爱好者｜壁纸创作者</span>
+                        <span class="info-label">✐身高</span>
+                        <span>168cm</span>
                     </div>
-                    <div class="info-desc">
-                        这片紫色星云存放所有温柔与浪漫，壁纸、文案、摄影、日常分享全部收录于此。任何人都可以浏览、分享视频、留下留言，记录每一份心动瞬间。
+                    <div class="info-item">
+                        <span class="info-label">✐星座</span>
+                        <span>巨蟹座♋</span>
                     </div>
+                    <div class="info-item">
+                        <span class="info-label">✐粉丝名</span>
+                        <span>月光石</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">✐应援色</span>
+                        <span>紫色</span>
+                    </div>
+                    <div class="info-item">
+                        <span class="info-label">✐应援口号</span>
+                        <span>月光相伴，雨你相随。</span>
+                    </div>
+
+                    <div class="info-divider"></div>
+
                     <div class="tag-list">
-                        <span class="tag">壁纸公之于众</span>
-                        <span class="tag">新音缘起</span>
-                        <span class="tag">祝你星途璀璨</span>
-                        <span class="tag">today is perfect with you</span>
+                        <span class="tag">月光相伴，雨你相随</span>
+                        <span class="tag">青年演员岳雨婷</span>
                     </div>
                 </div>
                 <!-- 右侧4图自动轮播 -->
@@ -660,55 +925,67 @@
         </section>
 
         <section id="works">
-            <h2 class="title">我的宇宙作品合集</h2>
-            <div class="works-grid">
-                <div class="work-card">
-                    <img src="https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zy.jpg" alt="双人电竞氛围感写真">
-                    <div class="work-text">
-                        <h3>电竞双人氛围感大片</h3>
-                        <p>星云渐变背景人像摄影</p>
+            <!-- 固定不动标题 -->
+            <h2 class="title">雨婷的作品合集</h2>
+            <!-- 仅这个容器内的作品可以滚动 -->
+            <div class="works-scroll-wrap">
+                <div class="works-grid">
+                    <!-- 新增《攻心为上》作品卡片，放在第一个位置 -->
+                    <a href="https://novelquickapp.com/s/ySnVVQ32S6g/" target="_blank" class="work-card">
+                        <img src="https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zy.jpg" alt="攻心为上小说封面">
+                        <div class="work-text">
+                            <h3>攻心为上</h3>
+                            <p>适演许耀月，点击卡片免费观看全集</p>
+                        </div>
+                    </a>
+                    <div class="work-card">
+                        <img src="https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zy.jpg" alt="双人电竞氛围感写真">
+                        <div class="work-text">
+                            <h3>电竞双人氛围感大片</h3>
+                            <p>星云渐变背景人像摄影</p>
+                        </div>
                     </div>
-                </div>
-                <div class="work-card">
-                    <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="壁纸作品">
-                    <div class="work-text">
-                        <h3>紫色梦幻星云壁纸</h3>
-                        <p>原创深空氛围感锁屏壁纸</p>
+                    <div class="work-card">
+                        <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="壁纸作品">
+                        <div class="work-text">
+                            <h3>紫色梦幻星云壁纸</h3>
+                            <p>原创深空氛围感锁屏壁纸</p>
+                        </div>
                     </div>
-                </div>
-                <div class="work-card">
-                    <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="摄影作品">
-                    <div class="work-text">
-                        <h3>楼道庆生摄影</h3>
-                        <p>纪实氛围感实拍</p>
+                    <div class="work-card">
+                        <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="摄影作品">
+                        <div class="work-text">
+                            <h3>既视感</h3>
+                            <p>纪实氛围感实拍</p>
+                        </div>
                     </div>
-                </div>
-                <div class="work-card">
-                    <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="图文文案">
-                    <div class="work-text">
-                        <h3>温柔宇宙文案合集</h3>
-                        <p>短句、治愈系星空文案</p>
+                    <div class="work-card">
+                        <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="图文文案">
+                        <div class="work-text">
+                            <h3>温柔宇宙文案合集</h3>
+                            <p>短句、治愈系星空文案</p>
+                        </div>
                     </div>
-                </div>
-                <div class="work-card">
-                    <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="兔子外套插画">
-                    <div class="work-text">
-                        <h3>兔子星空插画</h3>
-                        <p>手绘治愈星云插画</p>
+                    <div class="work-card">
+                        <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="兔子外套插画">
+                        <div class="work-text">
+                            <h3>兔子星空插画</h3>
+                            <p>手绘治愈星云插画</p>
+                        </div>
                     </div>
-                </div>
-                <div class="work-card">
-                    <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="海德薇emo猫">
-                    <div class="work-text">
-                        <h3>海德薇和星云小猫</h3>
-                        <p>可爱动物系列绘图</p>
+                    <div class="work-card">
+                        <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="海德薇emo猫">
+                        <div class="work-text">
+                            <h3>星云小猫</h3>
+                            <p>可爱动物系列绘图</p>
+                        </div>
                     </div>
-                </div>
-                <div class="work-card">
-                    <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="24新音海报">
-                    <div class="work-text">
-                        <h3>24新音星云海报设计</h3>
-                        <p>活动视觉设计</p>
+                    <div class="work-card">
+                        <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="24新音海报">
+                        <div class="work-text">
+                            <h3>星云海报设计</h3>
+                            <p>活动视觉设计</p>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -716,12 +993,34 @@
 
         <section id="video">
             <h2 class="title">安利视频 | 所有人可上传分享</h2>
+
+            <!-- 顶部筛选栏 匹配参考图 -->
+            <div class="video-filter-bar">
+                <select id="videoCate">
+                    <option value="all">ALL</option>
+                    <option value="img">图片</option>
+                    <option value="draw">绘/漫</option>
+                    <option value="fic">同人文</option>
+                </select>
+                <select id="videoSort">
+                    <option value="all">ALL</option>
+                </select>
+                <label>
+                    <input type="checkbox" id="videoEnd"> 完结
+                </label>
+            </div>
+
+            <!-- 添加视频输入模块 -->
             <div class="video-input-box">
                 <input type="text" id="videoUrl" placeholder="粘贴B站/抖音/快手/视频号链接，粘贴后点击添加视频">
                 <button class="btn" id="addVideoBtn">添加视频</button>
                 <p style="margin-top:12px;opacity:0.7;">支持各平台视频链接，所有访客均可查看分享内容</p>
             </div>
-            <div class="video-list" id="videoContainer"></div>
+
+            <!-- 瀑布流卡片容器 -->
+            <div class="video-list" id="videoContainer">
+                <div class="empty-tip">暂无安利视频，快来添加第一条吧！</div>
+            </div>
         </section>
 
         <section id="message">
@@ -730,7 +1029,7 @@
                 <div class="msg-left">
                     <form class="msg-form" id="msgForm">
                         <h3>写下你的星际留言</h3>
-                        <input type="text" id="userName" placeholder="你的昵称（管理员填admin）" required>
+                        <input type="text" id="userName" placeholder="你的昵称" required>
                         <textarea id="userMsg" placeholder="写下想留在这片紫星云的话..." required></textarea>
                         <button class="btn" type="submit">提交星际留言</button>
                     </form>
@@ -755,10 +1054,20 @@
     </main>
 
     <footer>
-        © 2026 雨婷 sweet | 紫色宇宙个人主页 · 仅留言作者/管理员可删除留言
+        ©雨婷 | 紫色星云
     </footer>
 
     <script>
+        // 弹窗关闭逻辑
+        const popMask = document.getElementById('entryPop');
+        const btn1 = document.getElementById('btn1');
+        const btn2 = document.getElementById('btn2');
+        function closePop() {
+            popMask.style.display = 'none';
+        }
+        btn1.addEventListener('click', closePop);
+        btn2.addEventListener('click', closePop);
+
         // 导航逻辑
         const navLinks = document.querySelectorAll('.nav-link');
         const sections = document.querySelectorAll('section');
@@ -773,33 +1082,57 @@
             })
         })
 
-        // 本地视频
+        // 本地视频存储渲染（瀑布流卡片）
         const videoUrlInput = document.getElementById('videoUrl');
         const addVideoBtn = document.getElementById('addVideoBtn');
         const videoContainer = document.getElementById('videoContainer');
-        function loadVideo() {
+        const cateSel = document.getElementById('videoCate');
+        const endCheck = document.getElementById('videoEnd');
+
+        // 模拟封面图（可自行替换）
+        const mockCovers = [
+            "https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zy.jpg",
+            "https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450"
+        ];
+
+        function renderVideoList(filterCate = "all", filterEnd = false) {
             const videos = JSON.parse(localStorage.getItem('luMuVideo')) || [];
-            videoContainer.innerHTML = '';
-            videos.forEach(url => {
-                let iframeSrc = '';
-                if(url.includes('bilibili')){
-                    const bv = url.match(/BV\w+/)[0];
-                    iframeSrc = `https://player.bilibili.com/player.html?bvid=${bv}&page=1`;
-                }else{
-                    iframeSrc = url;
-                }
-                const html = `<div class="video-item"><iframe src="${iframeSrc}" allowfullscreen></iframe></div>`;
+            videoContainer.innerHTML = "";
+            if (!videos.length) {
+                videoContainer.innerHTML = `<div class="empty-tip">暂无安利视频，快来添加第一条吧！</div>`;
+                return;
+            }
+            videos.forEach((item, idx) => {
+                const cover = mockCovers[idx % mockCovers.length];
+                const html = `
+                    <div class="video-item">
+                        <img class="video-thumb" src="${cover}" alt="视频封面">
+                        <div class="video-card-text">
+                            <div class="video-card-title">安利视频 #${idx+1}</div>
+                            <div class="video-card-desc">分享链接：${item.slice(0,30)}...</div>
+                        </div>
+                        <svg class="video-link-icon" viewBox="0 0 24 24" fill="#d0a8ff">
+                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
+                        </svg>
+                    </div>
+                `;
                 videoContainer.innerHTML += html;
             })
         }
-        loadVideo();
+
+        // 初始加载
+        renderVideoList();
+        // 筛选监听
+        cateSel.addEventListener('change', ()=>renderVideoList(cateSel.value, endCheck.checked));
+        endCheck.addEventListener('change', ()=>renderVideoList(cateSel.value, endCheck.checked));
+
         addVideoBtn.addEventListener('click', ()=>{
             const url = videoUrlInput.value.trim();
             if(!url) return alert('请粘贴视频链接');
             const allVideo = JSON.parse(localStorage.getItem('luMuVideo')) || [];
             allVideo.push(url);
             localStorage.setItem('luMuVideo', JSON.stringify(allVideo));
-            loadVideo();
+            renderVideoList(cateSel.value, endCheck.checked);
             videoUrlInput.value = '';
             alert('视频添加成功，所有人都能浏览！');
         })
