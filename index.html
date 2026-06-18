@@ -1,13 +1,13 @@
 <!DOCTYPE html>
 <html lang="zh-CN">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>雨婷 | 紫色星云</title>
-    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2">
+    </script>
     <style>
         :root {
-            /* 深空银河紫配色 */
             --space-black: #060210;
             --space-dark-purple: #280858;
             --space-main-purple: #681cc8;
@@ -23,45 +23,49 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
-            font-family: "Microsoft Yahei", sans-serif;
+            font-family: "Microsoft Yahei", "PingFang SC", sans-serif;
         }
-        /* 全局全屏星云背景，铺满浏览器所有区域，消除两侧黑色空白 */
         body {
-            /* 全局星云底图，所有页面共用 */
             background: url("https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/yz.png") center center / cover no-repeat fixed;
             color: var(--text-white);
             position: relative;
             overflow-x: hidden;
         }
-        /* 弹窗遮罩层 */
+
+        /* ===== 弹窗 ===== */
         .pop-mask {
             position: fixed;
             inset: 0;
-            background: rgba(0,0,0,0.85);
+            background: rgba(0, 0, 0, 0.85);
             z-index: 99999;
             display: flex;
             align-items: center;
             justify-content: center;
             padding: 20px;
         }
-        /* 弹窗主体 */
         .pop-box {
             background: var(--card-strong-bg);
-            border: 1px solid rgba(208,168,255,0.4);
+            border: 1px solid rgba(208, 168, 255, 0.4);
             border-radius: 24px;
             padding: 40px 30px;
             max-width: 520px;
             width: 100%;
             text-align: center;
-            box-shadow: 0 0 60px rgba(104,28,200,0.5);
+            box-shadow: 0 0 60px rgba(104, 28, 200, 0.5);
             animation: popShow 0.4s ease;
         }
         @keyframes popShow {
-            from {opacity:0; transform: scale(0.9);}
-            to {opacity:1; transform: scale(1);}
+            from {
+                opacity: 0;
+                transform: scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
         }
         .pop-text {
-            font-size: 20px;
+            font-size: 26px;
             line-height: 1.8;
             margin-bottom: 36px;
             color: var(--space-glow);
@@ -73,8 +77,8 @@
             flex-wrap: wrap;
         }
         .pop-btn {
-            padding: 12px 32px;
-            font-size: 18px;
+            padding: 16px 40px;
+            font-size: 22px;
             border-radius: 999px;
             border: 1px solid var(--space-light-purple);
             background: transparent;
@@ -85,9 +89,10 @@
         .pop-btn:hover {
             background: linear-gradient(135deg, var(--space-main-purple), var(--space-dark-purple));
             transform: translateY(-3px);
-            box-shadow: 0 0 20px rgba(160,90,255,0.4);
+            box-shadow: 0 0 20px rgba(160, 90, 255, 0.4);
         }
-        /* 全局星空粒子叠加层，叠加在星云背景上方增加层次感 */
+
+        /* ===== 星空粒子 ===== */
         body::before {
             content: "";
             position: fixed;
@@ -125,50 +130,57 @@
             z-index: -1;
             opacity: 0.5;
         }
-        .nebula-layer {
-            display: none; /* 废弃原有半透明星云层，改用完整背景图 */
-        }
         @keyframes starFlow {
-            0% { transform: translate(0, 0); }
-            100% { transform: translate(-66.6%, -66.6%); }
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(-66.6%, -66.6%);
+            }
         }
         @keyframes starTwinkle {
-            0% { opacity: 0.35; }
-            100% { opacity: 0.75; }
-        }
-        @keyframes nebulaSlowMove {
-            0% { transform: translate(0,0) scale(1); }
-            50% { transform: translate(-30px, 15px) scale(1.04); }
-            100% { transform: translate(20px, -20px) scale(0.96); }
+            0% {
+                opacity: 0.35;
+            }
+            100% {
+                opacity: 0.75;
+            }
         }
         @keyframes cardFloat {
-            0% { transform: translateY(0px); }
-            50% { transform: translateY(-8px); }
-            100% { transform: translateY(0px); }
+            0% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-8px);
+            }
+            100% {
+                transform: translateY(0px);
+            }
         }
         @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
-        @keyframes carouselFade {
-            0% { opacity: 0; transform: scale(0.96); }
-            8% { opacity: 1; transform: scale(1); }
-            25% { opacity: 1; transform: scale(1); }
-            33% { opacity: 0; transform: scale(0.96); }
-            100% { opacity: 0; transform: scale(0.96); }
-        }
+
+        /* ===== 顶部导航 ===== */
         header {
             position: fixed;
             top: 0;
             width: 100%;
             background: linear-gradient(90deg, var(--space-dark-purple), var(--space-main-purple));
-            box-shadow: 0 2px 18px rgba(112,32,208,0.35);
+            box-shadow: 0 2px 18px rgba(112, 32, 208, 0.35);
             z-index: 9999;
             backdrop-filter: blur(8px);
-            border-bottom: 1px solid rgba(200,150,255,0.15);
+            border-bottom: 1px solid rgba(200, 150, 255, 0.15);
         }
         .nav-box {
-            max-width: 1200px;
+            max-width: 75vw;
             margin: 0 auto;
             display: flex;
             justify-content: space-between;
@@ -176,7 +188,7 @@
             padding: 14px 20px;
         }
         .logo {
-            font-size: 24px;
+            font-size: 32px;
             font-weight: bold;
             letter-spacing: 2px;
             transition: var(--transition-base);
@@ -192,8 +204,8 @@
         .nav-menu li a {
             color: var(--text-white);
             text-decoration: none;
-            font-size: 17px;
-            padding: 8px 14px;
+            font-size: 22px;
+            padding: 12px 20px;
             border-radius: 8px;
             transition: var(--transition-base);
             pointer-events: auto !important;
@@ -202,8 +214,8 @@
             border: 1px solid transparent;
         }
         .nav-menu li a:hover {
-            background: rgba(200,150,255,0.18);
-            border-color: rgba(200,150,255,0.3);
+            background: rgba(200, 150, 255, 0.18);
+            border-color: rgba(200, 150, 255, 0.3);
             transform: translateY(-2px);
         }
         .nav-menu li a.active {
@@ -211,8 +223,10 @@
             color: var(--space-black);
             transform: scale(1.05);
         }
+
+        /* ===== 主体 ===== */
         main {
-            max-width: 1200px;
+            max-width: 75vw;
             margin: 0 auto;
             padding-top: 90px;
             padding-bottom: 50px;
@@ -224,7 +238,6 @@
             animation: fadeInUp 0.6s ease forwards;
             position: relative;
         }
-        /* 全局页面遮罩 */
         section::before {
             content: "";
             position: absolute;
@@ -233,39 +246,127 @@
             z-index: 1;
             border-radius: 12px;
         }
-        /* 首页单独降低遮罩透明度，完整显示星云背景 */
         #home::before {
             background: rgba(4, 1, 12, 0.32);
         }
         section.active {
             display: block;
         }
-        /* 首页移除单独背景，全局body已经铺满星云 */
         #home {
             background: transparent;
         }
-        /* 页面所有内容提升层级在遮罩上方 */
-        section > * {
+        section>* {
             position: relative;
             z-index: 2;
         }
-        /* 首页标题通用样式 */
+
+        /* ===== 标题 — 优雅星云风格 ===== */
         .title {
             text-align: center;
-            font-size: 32px;
-            margin-bottom: 32px;
+            font-size: 48px;
+            margin-bottom: 36px;
             margin-top: 10px;
-            color: var(--space-light-purple);
-            opacity: 0.9;
-            font-weight: 500;
-            letter-spacing: 4px;
-            animation: fadeInUp 0.6s ease;
+            font-weight: 700;
+            letter-spacing: 6px;
+            position: relative;
+            color: transparent;
+            background: linear-gradient(135deg, #f0e0ff 0%, #d0a8ff 40%, #a87aff 70%, #d0a8ff 100%);
+            background-size: 200% 200%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            animation: shimmerTitle 4s ease-in-out infinite alternate;
+            text-shadow: 0 0 40px rgba(160, 90, 255, 0.25), 0 0 80px rgba(120, 50, 200, 0.15);
+            padding-bottom: 16px;
         }
-        /* ========== 作品页专属固定标题样式 ========== */
+        .title::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 120px;
+            height: 3px;
+            background: linear-gradient(90deg, transparent, var(--space-light-purple), var(--space-glow), var(--space-light-purple), transparent);
+            border-radius: 4px;
+            animation: titleLine 3s ease-in-out infinite alternate;
+            box-shadow: 0 0 20px rgba(208, 168, 255, 0.4);
+        }
+        .title::before {
+            content: "✦";
+            display: inline-block;
+            margin-right: 20px;
+            font-size: 40px;
+            background: linear-gradient(135deg, var(--space-glow), var(--space-light-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: starSpin 6s linear infinite;
+        }
+        @keyframes shimmerTitle {
+            0% {
+                background-position: 0% 50%;
+            }
+            100% {
+                background-position: 100% 50%;
+            }
+        }
+        @keyframes titleLine {
+            0% {
+                width: 80px;
+                opacity: 0.6;
+            }
+            100% {
+                width: 180px;
+                opacity: 1;
+            }
+        }
+        @keyframes starSpin {
+            0% {
+                transform: rotate(0deg) scale(1);
+            }
+            50% {
+                transform: rotate(180deg) scale(1.2);
+            }
+            100% {
+                transform: rotate(360deg) scale(1);
+            }
+        }
+
+        /* 其他区标题 */
+        #works .title,
+        #video .title,
+        #message .title {
+            font-size: 42px;
+            letter-spacing: 4px;
+            background: linear-gradient(135deg, #e8d8ff, #c8a0ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            text-shadow: 0 0 30px rgba(160, 90, 255, 0.2);
+        }
+        #works .title::before,
+        #video .title::before,
+        #message .title::before {
+            content: "✦";
+            display: inline-block;
+            margin-right: 16px;
+            font-size: 34px;
+            background: linear-gradient(135deg, var(--space-glow), var(--space-light-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: starSpin 6s linear infinite;
+        }
+        #works .title::after,
+        #video .title::after,
+        #message .title::after {
+            width: 100px;
+            height: 2px;
+        }
+
         #works .title {
             position: sticky;
             top: 100px;
-            /* 替换：淡紫半透明底色，和整体紫色星云统一，不发黑 */
             background: linear-gradient(90deg, rgba(80, 20, 160, 0.35), rgba(120, 40, 200, 0.25));
             padding: 16px 0;
             margin: 0 auto 20px;
@@ -273,28 +374,55 @@
             border-radius: 12px;
             backdrop-filter: blur(8px);
             z-index: 10;
-            /* 加细紫边框，和页面卡片风格统一 */
-            border: 1px solid rgba(208,168,255,0.25);
+            border: 1px solid rgba(208, 168, 255, 0.25);
+            -webkit-background-clip: unset;
+            background-clip: unset;
+            color: var(--space-light-purple);
+            text-shadow: none;
         }
-        /* 作品滚动容器：仅作品区域滚动 */
+        #works .title::before {
+            content: "✦";
+            display: inline-block;
+            margin-right: 16px;
+            font-size: 34px;
+            background: linear-gradient(135deg, var(--space-glow), var(--space-light-purple));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            animation: starSpin 6s linear infinite;
+        }
+        #works .title::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 100px;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--space-light-purple), var(--space-glow), var(--space-light-purple), transparent);
+            border-radius: 4px;
+            animation: titleLine 3s ease-in-out infinite alternate;
+            box-shadow: 0 0 20px rgba(208, 168, 255, 0.3);
+        }
+
         .works-scroll-wrap {
             max-height: calc(100vh - 220px);
             overflow-y: auto;
             padding-right: 8px;
         }
-        /* 美化滚动条 */
         .works-scroll-wrap::-webkit-scrollbar {
             width: 6px;
         }
         .works-scroll-wrap::-webkit-scrollbar-track {
-            background: rgba(208,168,255,0.1);
+            background: rgba(208, 168, 255, 0.1);
             border-radius: 10px;
         }
         .works-scroll-wrap::-webkit-scrollbar-thumb {
             background: var(--space-light-purple);
             border-radius: 10px;
         }
-        /* 首页左右分栏容器 */
+
+        /* ===== 首页布局 ===== */
         .home-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -302,97 +430,98 @@
             align-items: stretch;
             margin-top: 40px;
         }
-        /* 左侧个人介绍卡片全面优化 */
         .info-card {
             background: var(--card-strong-bg);
-            padding: 40px;
+            padding: 48px 56px;
             border-radius: 28px;
-            border: 1px solid rgba(208,168,255,0.35);
-            box-shadow:
-                0 0 35px rgba(104,28,200,0.28),
-                inset 0 0 40px rgba(180, 100, 255, 0.05);
+            border: 1px solid rgba(208, 168, 255, 0.35);
+            box-shadow: 0 0 35px rgba(104, 28, 200, 0.28), inset 0 0 40px rgba(180, 100, 255, 0.05);
             animation: cardFloat 7s ease-in-out infinite;
             text-align: left;
             transition: var(--transition-base);
         }
         .info-card:hover {
             transform: translateY(-4px) scale(1.01);
-            box-shadow:
-                0 0 45px rgba(104,28,200,0.35),
-                inset 0 0 40px rgba(180, 100, 255, 0.08);
+            box-shadow: 0 0 45px rgba(104, 28, 200, 0.35), inset 0 0 40px rgba(180, 100, 255, 0.08);
         }
         .info-card h2 {
-            font-size: 30px;
+            font-size: 42px;
             text-align: center;
             color: #fff;
-            margin-bottom: 26px;
-            border-bottom: 1px solid rgba(208,168,255,0.3);
-            padding-bottom: 14px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(208, 168, 255, 0.3);
+            padding-bottom: 16px;
             background: linear-gradient(90deg, #fff, var(--space-light-purple));
             -webkit-background-clip: text;
             background-clip: text;
             color: transparent;
         }
-        .info-divider {
-            width: 100%;
-            height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(208,168,255,0.35), transparent);
-            margin: 20px 0;
-        }
         .info-item {
-            margin-bottom: 14px;
-            font-size: 17px;
-            line-height: 1.8;
+            margin-bottom: 24px;
+            font-size: 24px;
+            line-height: 2.2;
             display: flex;
             align-items: center;
+            padding-left: 12px;
+            gap: 16px;
         }
         .info-label {
             color: var(--space-light-purple);
             font-weight: bold;
             display: inline-block;
-            min-width: 110px;
+            min-width: 160px;
         }
         .tag-list {
-            margin-top: 32px;
+            margin-top: 36px;
             display: flex;
-            gap: 14px;
+            gap: 20px;
             flex-wrap: wrap;
+            padding-left: 12px;
         }
         .tag {
-            padding: 7px 18px;
+            padding: 12px 26px;
+            font-size: 22px;
             background: var(--card-bg);
-            border: 1px solid rgba(200,150,255,0.28);
+            border: 1px solid rgba(200, 150, 255, 0.28);
             border-radius: 32px;
             transition: var(--transition-base);
             animation: cardFloat 6s ease-in-out infinite;
             cursor: default;
         }
-        .tag:nth-child(2n) { animation-delay: -2s; }
-        .tag:nth-child(3n) { animation-delay: -4s; }
+        .tag:nth-child(2n) {
+            animation-delay: -2s;
+        }
+        .tag:nth-child(3n) {
+            animation-delay: -4s;
+        }
         .tag:hover {
-            background: linear-gradient(135deg, rgba(104,28,200,0.3), rgba(160, 70, 240, 0.2));
+            background: linear-gradient(135deg, rgba(104, 28, 200, 0.3), rgba(160, 70, 240, 0.2));
             border-color: var(--space-light-purple);
             transform: translateY(-4px) scale(1.04);
         }
-        /* 右侧轮播容器优化星云光晕 */
+
+        /* ===== 轮播 ===== */
         .carousel-wrap {
+            position: relative;
             border-radius: 28px;
             overflow: hidden;
-            border: 2px solid rgba(208,168,255,0.45);
-            box-shadow:
-                0 0 50px rgba(104,28,200,0.4),
-                0 0 80px rgba(130, 40, 220, 0.15);
+            border: 2px solid rgba(208, 168, 255, 0.45);
+            box-shadow: 0 0 50px rgba(104, 28, 200, 0.4), 0 0 80px rgba(130, 40, 220, 0.15);
             animation: cardFloat 7s ease-in-out infinite;
-            position: relative;
             aspect-ratio: 4 / 5;
             width: 100%;
             transition: var(--transition-base);
+            background: #0c0620;
+            user-select: none;
         }
         .carousel-wrap:hover {
             transform: translateY(-4px) scale(1.01);
-            box-shadow:
-                0 0 60px rgba(104,28,200,0.48),
-                0 0 100px rgba(130, 40, 220, 0.2);
+            box-shadow: 0 0 60px rgba(104, 28, 200, 0.48), 0 0 100px rgba(130, 40, 220, 0.2);
+        }
+        .carousel-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
         }
         .carousel-item {
             position: absolute;
@@ -401,23 +530,71 @@
             width: 100%;
             height: 100%;
             opacity: 0;
-            animation: carouselFade 24s infinite;
+            transition: opacity 0.7s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            z-index: 1;
+        }
+        .carousel-item.active {
+            opacity: 1;
+            z-index: 2;
         }
         .carousel-item img {
             width: 100%;
             height: 100%;
             object-fit: cover;
             display: block;
-            transition: transform 8s ease;
+            transition: transform 6s ease;
         }
         .carousel-item:hover img {
             transform: scale(1.06);
         }
-        .carousel-item:nth-child(1) { animation-delay: 0s; }
-        .carousel-item:nth-child(2) { animation-delay: -6s; }
-        .carousel-item:nth-child(3) { animation-delay: -12s; }
-        .carousel-item:nth-child(4) { animation-delay: -18s; }
-        /* 作品板块：单张独占一行，左图右文 */
+        .carousel-btn {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            z-index: 10;
+            background: rgba(10, 2, 30, 0.55);
+            backdrop-filter: blur(6px);
+            border: 1px solid rgba(208, 168, 255, 0.35);
+            color: var(--space-glow);
+            font-size: 38px;
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            cursor: pointer;
+            transition: var(--transition-base);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            line-height: 1;
+            box-shadow: 0 0 20px rgba(104, 28, 200, 0.25);
+        }
+        .carousel-btn:hover {
+            background: rgba(104, 28, 200, 0.6);
+            border-color: var(--space-light-purple);
+            transform: translateY(-50%) scale(1.12);
+            box-shadow: 0 0 35px rgba(160, 90, 255, 0.4);
+        }
+        .carousel-btn.prev {
+            left: 16px;
+        }
+        .carousel-btn.next {
+            right: 16px;
+        }
+        @media (max-width: 768px) {
+            .carousel-btn {
+                width: 40px;
+                height: 40px;
+                font-size: 28px;
+            }
+            .carousel-btn.prev {
+                left: 8px;
+            }
+            .carousel-btn.next {
+                right: 8px;
+            }
+        }
+
+        /* ===== 作品卡片 ===== */
         .works-grid {
             display: flex;
             flex-direction: column;
@@ -425,173 +602,323 @@
         }
         .work-card {
             background: var(--card-bg);
-            border: 1px solid rgba(200,150,255,0.18);
+            border: 1px solid rgba(200, 150, 255, 0.18);
             border-radius: 14px;
             overflow: hidden;
             transition: var(--transition-base);
             animation: cardFloat 7s ease-in-out infinite;
-            /* 一行两栏：图片 + 文字 */
             display: grid;
-            grid-template-columns: 320px 1fr;
+            grid-template-columns: 280px 1fr;
             align-items: center;
-            gap: 24px;
-            padding: 20px;
+            gap: 28px;
+            padding: 28px;
+            position: relative;
         }
-        .work-card:nth-child(even) { animation-delay: -3s; }
+        .work-card::after {
+            content: "";
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 60%;
+            height: 100%;
+            background: radial-gradient(ellipse at right center, rgba(160, 60, 220, 0.15), transparent 70%);
+            pointer-events: none;
+            z-index: 0;
+        }
+        .work-card:nth-child(even) {
+            animation-delay: -3s;
+        }
         .work-card:hover {
             transform: translateY(-8px) scale(1.01);
             border-color: var(--space-light-purple);
         }
+        .work-card .img-box {
+            width: 100%;
+            max-width: 240px;
+            border-radius: 10px;
+            overflow: hidden;
+            background: #0c0620;
+            position: relative;
+            z-index: 1;
+        }
         .work-card img {
             width: 100%;
-            height: 240px;
-            object-fit: cover;
-            background: #0c0620;
-            border-radius: 10px;
+            height: auto;
+            display: block;
             transition: var(--transition-base);
         }
         .work-card:hover img {
             transform: scale(1.05);
         }
         .work-text {
-            padding: 0 10px;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
         }
         .work-text h3 {
-            margin-bottom: 12px;
+            margin-bottom: 18px;
             color: var(--space-light-purple);
-            font-size: 22px;
+            font-size: 42px;
+            letter-spacing: 1.2px;
+            font-weight: 600;
+        }
+        .work-text .sub-desc {
+            font-size: 24px;
+            color: var(--space-glow);
+            margin-bottom: 20px;
+            opacity: 0.92;
+        }
+        .work-tag-group {
+            display: flex;
+            gap: 16px;
+            flex-wrap: wrap;
+            margin-bottom: 24px;
+        }
+        .work-tag {
+            padding: 12px 22px;
+            background: rgba(208, 168, 255, 0.12);
+            border: 1px solid rgba(208, 168, 255, 0.25);
+            border-radius: 30px;
+            font-size: 20px;
+            color: var(--space-light-purple);
         }
         .work-text p {
-            font-size: 17px;
+            font-size: 23px;
             color: var(--text-gray);
-            line-height: 1.7;
+            line-height: 2;
         }
-        /* ========== 安利视频页面全新布局（参考图样式） ========== */
-        /* 顶部筛选栏 */
-        .video-filter-bar {
+
+        /* ============================================================
+           安利分享 — 分类 Tab + 上传 + 展示
+           ============================================================ */
+
+        /* —— 分类 Tab 导航 —— */
+        .category-nav {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 32px;
+            flex-wrap: wrap;
+        }
+        .cat-tab {
+            padding: 14px 36px;
+            border-radius: 40px;
+            border: 1.5px solid rgba(208, 168, 255, 0.25);
+            background: rgba(10, 2, 30, 0.40);
+            backdrop-filter: blur(4px);
+            color: var(--text-gray);
+            font-size: 24px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition-base);
             display: flex;
             align-items: center;
-            gap: 16px;
-            margin-bottom: 24px;
-            flex-wrap: wrap;
-            background: var(--card-bg);
-            padding: 12px 16px;
-            border-radius: 12px;
-            border: 1px solid rgba(208,168,255,0.2);
-            backdrop-filter: blur(6px);
+            gap: 10px;
+            letter-spacing: 1px;
+            box-shadow: 0 0 15px rgba(104, 28, 200, 0.08);
         }
-        .video-filter-bar select,
-        .video-filter-bar label {
+        .cat-tab:hover {
+            background: rgba(104, 28, 200, 0.25);
+            border-color: var(--space-light-purple);
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(160, 90, 255, 0.15);
+        }
+        .cat-tab.active {
+            background: linear-gradient(135deg, rgba(104, 28, 200, 0.50), rgba(160, 70, 240, 0.35));
+            border-color: var(--space-light-purple);
+            color: var(--space-glow);
+            box-shadow: 0 0 40px rgba(160, 90, 255, 0.25), inset 0 0 30px rgba(208, 168, 255, 0.08);
+            transform: translateY(-2px);
+        }
+        .cat-tab .icon {
+            font-size: 28px;
+        }
+        .cat-tab .badge {
+            background: rgba(208, 168, 255, 0.15);
+            padding: 2px 12px;
+            border-radius: 20px;
             font-size: 16px;
-            color: var(--text-white);
+            color: var(--space-light-purple);
+            margin-left: 4px;
         }
-        .video-filter-bar select {
-            background: #0c0620;
-            border: 1px solid rgba(208,168,255,0.25);
-            padding: 6px 10px;
-            border-radius: 8px;
-            color: var(--text-white);
-            min-width: 140px;
+
+        /* —— 上传区域 —— */
+        .share-upload-box {
+            background: var(--card-strong-bg);
+            padding: 28px 32px;
+            border-radius: 20px;
+            border: 1px solid rgba(200, 150, 255, 0.2);
+            margin-bottom: 36px;
+            backdrop-filter: blur(6px);
+            transition: var(--transition-base);
         }
-        /* 瀑布流网格布局 */
-        .video-list {
+        .share-upload-box .upload-title {
+            font-size: 22px;
+            color: var(--space-light-purple);
+            margin-bottom: 16px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .share-upload-box .upload-title span {
+            font-size: 26px;
+        }
+        .share-upload-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+        }
+        .share-upload-row .full-width {
+            grid-column: 1 / -1;
+        }
+        .share-upload-box input,
+        .share-upload-box textarea {
+            width: 100%;
+            padding: 14px 18px;
+            border-radius: 12px;
+            border: 1px solid rgba(200, 150, 255, 0.2);
+            background: rgba(12, 6, 32, 0.60);
+            color: #fff;
+            font-size: 20px;
+            transition: var(--transition-base);
+            backdrop-filter: blur(2px);
+        }
+        .share-upload-box input:focus,
+        .share-upload-box textarea:focus {
+            outline: none;
+            border-color: var(--space-light-purple);
+            box-shadow: 0 0 20px rgba(160, 90, 255, 0.15);
+        }
+        .share-upload-box textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        .share-upload-box .btn-upload {
+            padding: 14px 40px;
+            background: linear-gradient(135deg, var(--space-main-purple), var(--space-dark-purple));
+            color: white;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-size: 22px;
+            transition: var(--transition-base);
+            grid-column: 1 / -1;
+            justify-self: center;
+            min-width: 200px;
+        }
+        .share-upload-box .btn-upload:hover {
+            background: linear-gradient(135deg, var(--space-light-purple), var(--space-main-purple));
+            transform: translateY(-3px);
+            box-shadow: 0 0 30px rgba(160, 90, 255, 0.3);
+        }
+
+        /* —— 展示区域 —— */
+        .share-display {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 24px;
+            gap: 28px;
+            min-height: 120px;
         }
-        /* 视频卡片 仿参考图样式 */
-        .video-item {
+        .share-card {
             background: var(--card-bg);
-            border: 1px solid rgba(200,150,255,0.18);
+            border: 1px solid rgba(200, 150, 255, 0.18);
             border-radius: 16px;
             overflow: hidden;
             transition: var(--transition-base);
             animation: cardFloat 7s ease-in-out infinite;
             position: relative;
+            display: flex;
+            flex-direction: column;
         }
-        .video-item:nth-child(even) { animation-delay: -3s; }
-        .video-item:hover {
-            transform: translateY(-8px) scale(1.02);
+        .share-card:hover {
+            transform: translateY(-6px) scale(1.01);
             border-color: var(--space-light-purple);
+            box-shadow: 0 0 30px rgba(104, 28, 200, 0.2);
         }
-        .video-thumb {
+        .share-card .card-media {
             width: 100%;
             aspect-ratio: 4 / 3;
             object-fit: cover;
             display: block;
+            background: #0c0620;
+            transition: var(--transition-base);
         }
-        .video-card-text {
-            padding: 16px;
+        .share-card:hover .card-media {
+            transform: scale(1.03);
         }
-        .video-card-title {
-            font-size: 16px;
+        .share-card .card-body {
+            padding: 20px 24px 24px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .share-card .card-title {
+            font-size: 22px;
             color: var(--space-glow);
             margin-bottom: 6px;
-            line-height: 1.4;
+            font-weight: 600;
         }
-        .video-card-desc {
-            font-size: 13px;
+        .share-card .card-desc {
+            font-size: 18px;
             color: var(--text-gray);
-            line-height: 1.5;
+            line-height: 1.6;
+            flex: 1;
+            word-break: break-all;
         }
-        /* 右下角链接小图标 */
-        .video-link-icon {
+        .share-card .card-time {
+            font-size: 14px;
+            color: rgba(200, 180, 255, 0.5);
+            margin-top: 12px;
+            border-top: 1px solid rgba(200, 150, 255, 0.08);
+            padding-top: 12px;
+        }
+        .share-card .card-del {
             position: absolute;
-            right: 12px;
-            bottom: 12px;
-            width: 24px;
-            height: 24px;
-            opacity: 0.6;
-        }
-        /* 添加视频输入框模块 */
-        .video-input-box {
-            max-width: 100%;
-            margin: 0 auto 30px;
-            background: var(--card-strong-bg);
-            padding: 20px;
-            border-radius: 16px;
-            border: 1px solid rgba(200,150,255,0.2);
-            transition: var(--transition-base);
-            backdrop-filter: blur(6px);
-        }
-        .video-input-box input {
-            width: 100%;
-            padding: 12px 16px;
-            border-radius: 10px;
-            border: 1px solid rgba(200,150,255,0.25);
-            background: #0c0620;
+            right: 14px;
+            top: 14px;
+            background: rgba(180, 40, 60, 0.80);
             color: #fff;
-            font-size: 16px;
-            margin-bottom: 16px;
-            transition: var(--transition-base);
-        }
-        .video-input-box input:focus {
-            outline: none;
-            border-color: var(--space-light-purple);
-        }
-        .btn {
-            padding: 10px 26px;
-            background: linear-gradient(135deg, var(--space-main-purple), var(--space-dark-purple));
-            color: white;
             border: none;
-            border-radius: 10px;
+            padding: 6px 14px;
+            border-radius: 8px;
             cursor: pointer;
             font-size: 16px;
             transition: var(--transition-base);
+            backdrop-filter: blur(4px);
+            z-index: 2;
         }
-        .btn:hover {
-            background: linear-gradient(135deg, var(--space-light-purple), var(--space-main-purple));
-            transform: translateY(-3px);
+        .share-card .card-del:hover {
+            background: rgba(220, 50, 80, 0.95);
+            transform: scale(1.08);
         }
-        .btn:active {
-            transform: translateY(1px);
+        .share-card .card-type-tag {
+            position: absolute;
+            left: 14px;
+            top: 14px;
+            background: rgba(10, 2, 30, 0.70);
+            backdrop-filter: blur(4px);
+            padding: 4px 14px;
+            border-radius: 20px;
+            font-size: 14px;
+            color: var(--space-light-purple);
+            border: 1px solid rgba(208, 168, 255, 0.2);
+            z-index: 2;
         }
-        /* 留言页面布局 */
+        .share-empty {
+            grid-column: 1 / -1;
+            text-align: center;
+            padding: 60px 0;
+            color: var(--text-gray);
+            font-size: 24px;
+            opacity: 0.7;
+        }
+
+        /* ===== 留言 ===== */
         .msg-wrap {
             display: grid;
-            grid-template-columns: 360px 1fr;
-            gap: 32px;
-            max-width: 1200px;
+            grid-template-columns: 380px 1fr;
+            gap: 36px;
+            max-width: 100%;
             margin: 0 auto;
             align-items: start;
         }
@@ -601,52 +928,64 @@
         }
         .msg-form {
             background: var(--card-strong-bg);
-            padding: 28px;
+            padding: 36px;
             border-radius: 20px;
-            border: 1px solid rgba(200,150,255,0.22);
+            border: 1px solid rgba(200, 150, 255, 0.22);
             transition: var(--transition-base);
             animation: cardFloat 8s ease-in-out infinite;
         }
         .msg-form h3 {
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
             color: var(--space-light-purple);
-            font-size: 22px;
+            font-size: 30px;
         }
-        .msg-form input, .msg-form textarea {
+        .msg-form input,
+        .msg-form textarea {
             width: 100%;
-            padding: 14px;
-            margin-bottom: 18px;
+            padding: 18px;
+            margin-bottom: 22px;
             background: #0c0620;
-            border: 1px solid rgba(200,150,255,0.25);
+            border: 1px solid rgba(200, 150, 255, 0.25);
             border-radius: 12px;
             color: #fff;
-            font-size: 16px;
+            font-size: 22px;
             transition: var(--transition-base);
         }
-        .msg-form input:focus, .msg-form textarea:focus {
+        .msg-form input:focus,
+        .msg-form textarea:focus {
             outline: none;
             border-color: var(--space-light-purple);
         }
         .msg-form textarea {
-            min-height: 140px;
+            min-height: 180px;
             resize: vertical;
         }
         .msg-form .btn {
             width: 100%;
-            padding: 12px;
-            font-size: 17px;
+            padding: 16px;
+            font-size: 24px;
+            background: linear-gradient(135deg, var(--space-main-purple), var(--space-dark-purple));
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: var(--transition-base);
+        }
+        .msg-form .btn:hover {
+            background: linear-gradient(135deg, var(--space-light-purple), var(--space-main-purple));
+            transform: translateY(-3px);
         }
         .msg-right {
             display: flex;
             flex-direction: column;
-            gap: 24px;
+            gap: 28px;
         }
         .msg-work-card {
             background: var(--card-strong-bg);
             border-radius: 20px;
             overflow: hidden;
-            border: 1px solid rgba(200,150,255,0.22);
+            border: 1px solid rgba(200, 150, 255, 0.22);
             transition: var(--transition-base);
             animation: cardFloat 7s ease-in-out infinite;
             animation-delay: -3s;
@@ -656,7 +995,7 @@
         }
         .msg-work-card img {
             width: 100%;
-            height: 240px;
+            height: 280px;
             object-fit: cover;
             background: #0c0620;
             transition: var(--transition-base);
@@ -665,35 +1004,36 @@
             transform: scale(1.06);
         }
         .msg-work-text {
-            padding: 20px;
+            padding: 28px;
             text-align: center;
         }
         .msg-work-text h3 {
             color: var(--space-light-purple);
-            margin-bottom: 8px;
-            font-size: 20px;
+            margin-bottom: 10px;
+            font-size: 28px;
         }
         .msg-work-text p {
             color: var(--text-gray);
+            font-size: 20px;
         }
         .msg-list-wrap h3 {
             text-align: center;
-            margin-bottom: 24px;
+            margin-bottom: 28px;
             color: var(--space-light-purple);
-            font-size: 22px;
+            font-size: 30px;
         }
         #msgList {
             display: flex;
             flex-direction: column;
-            gap: 20px;
+            gap: 24px;
         }
         .msg-item {
             background: var(--card-bg);
-            padding: 24px;
+            padding: 32px;
             border-radius: 18px;
             border-left: 5px solid var(--space-light-purple);
             position: relative;
-            box-shadow: 0 2px 14px rgba(0,0,0,0.25);
+            box-shadow: 0 2px 14px rgba(0, 0, 0, 0.25);
             transition: var(--transition-base);
             animation: fadeInUp 0.5s ease forwards;
         }
@@ -704,31 +1044,31 @@
         .msg-name {
             color: var(--space-light-purple);
             font-weight: bold;
-            font-size: 19px;
-            margin-bottom: 6px;
+            font-size: 26px;
+            margin-bottom: 8px;
         }
         .msg-time {
-            font-size: 13px;
+            font-size: 17px;
             opacity: 0.7;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             color: var(--text-gray);
         }
         .msg-content {
-            line-height: 1.8;
-            font-size: 16px;
+            line-height: 1.9;
+            font-size: 24px;
             color: #f0e6ff;
         }
         .del-msg-btn {
             position: absolute;
-            right: 20px;
-            top: 20px;
+            right: 24px;
+            top: 24px;
             background: linear-gradient(135deg, #912040, #b82850);
             color: #fff;
             border: none;
-            padding: 5px 12px;
+            padding: 8px 16px;
             border-radius: 10px;
             cursor: pointer;
-            font-size: 13px;
+            font-size: 17px;
             transition: var(--transition-base);
         }
         .del-msg-btn:hover {
@@ -737,30 +1077,45 @@
         }
         .empty-tip {
             text-align: center;
-            padding: 60px 0;
+            padding: 70px 0;
             color: var(--text-gray);
-            font-size: 17px;
+            font-size: 24px;
             grid-column: 1 / -1;
         }
         footer {
             text-align: center;
-            padding: 20px;
+            padding: 28px;
             opacity: 0.6;
-            font-size: 14px;
+            font-size: 18px;
             color: var(--text-gray);
-            border-top: 1px solid rgba(200,150,255,0.1);
+            border-top: 1px solid rgba(200, 150, 255, 0.1);
             margin-top: 40px;
             position: relative;
             z-index: 99;
         }
-        /* 手机端适配 */
+
+        /* ===== 响应式 ===== */
         @media (max-width:992px) {
+            main,
+            .nav-box {
+                max-width: 95vw;
+            }
             .home-row {
                 grid-template-columns: 1fr;
-                gap: 36px;
+                gap: 40px;
                 margin-top: 30px;
             }
-            .info-card, .carousel-wrap {
+            .info-card {
+                padding: 36px 40px;
+            }
+            .info-item {
+                padding-left: 8px;
+            }
+            .tag-list {
+                padding-left: 8px;
+            }
+            .info-card,
+            .carousel-wrap {
                 border-radius: 24px;
             }
             .msg-wrap {
@@ -769,64 +1124,128 @@
             .msg-left {
                 position: static;
             }
-            /* 移动端作品卡片上下布局 */
             .work-card {
                 grid-template-columns: 1fr;
             }
-            /* 移动端标题高度适配 */
             #works .title {
                 top: 85px;
             }
             .works-scroll-wrap {
                 max-height: calc(100vh - 200px);
             }
-            /* 视频筛选栏移动端 */
-            .video-filter-bar {
-                flex-direction: column;
-                align-items: flex-start;
+            .title {
+                font-size: 36px !important;
+                letter-spacing: 4px !important;
+            }
+            .title::before {
+                font-size: 30px !important;
+                margin-right: 14px !important;
+            }
+            #works .title,
+            #video .title,
+            #message .title {
+                font-size: 32px !important;
+            }
+            .share-upload-row {
+                grid-template-columns: 1fr;
+            }
+            .share-upload-row .full-width {
+                grid-column: 1;
+            }
+            .share-upload-box .btn-upload {
+                grid-column: 1;
+                width: 100%;
+            }
+            .cat-tab {
+                padding: 10px 22px;
+                font-size: 20px;
+            }
+            .cat-tab .icon {
+                font-size: 22px;
             }
         }
         @media (max-width:768px) {
             .nav-box {
                 flex-direction: column;
-                gap:12px;
+                gap: 12px;
             }
             .nav-menu {
-                gap:12px;
+                gap: 12px;
                 flex-wrap: wrap;
                 justify-content: center;
             }
-            .video-list {
+            .share-display {
                 grid-template-columns: 1fr;
             }
             .title {
-                font-size: 26px;
-                letter-spacing: 2px;
+                font-size: 28px !important;
+                letter-spacing: 2px !important;
+            }
+            .title::before {
+                font-size: 24px !important;
+                margin-right: 10px !important;
+            }
+            .title::after {
+                width: 60px !important;
+            }
+            #works .title,
+            #video .title,
+            #message .title {
+                font-size: 26px !important;
             }
             .info-card h2 {
-                font-size: 24px;
+                font-size: 34px;
             }
             .info-card {
-                padding: 28px;
+                padding: 32px 30px;
             }
             .info-item {
-                font-size: 16px;
+                font-size: 20px;
+                padding-left: 6px;
+            }
+            .tag-list {
+                padding-left: 6px;
             }
             .pop-text {
-                font-size: 17px;
+                font-size: 22px;
             }
             .pop-btn {
-                padding: 10px 24px;
-                font-size: 16px;
+                padding: 12px 28px;
+                font-size: 20px;
             }
             .work-text h3 {
-                font-size: 20px;
+                font-size: 30px;
+            }
+            .cat-tab {
+                padding: 8px 16px;
+                font-size: 17px;
+                gap: 6px;
+            }
+            .cat-tab .icon {
+                font-size: 18px;
+            }
+            .cat-tab .badge {
+                font-size: 13px;
+                padding: 0 8px;
+            }
+            .share-upload-box {
+                padding: 20px 16px;
+            }
+            .share-upload-box input,
+            .share-upload-box textarea {
+                font-size: 17px;
+                padding: 12px 14px;
+            }
+            .share-upload-box .btn-upload {
+                font-size: 19px;
+                padding: 12px 24px;
             }
         }
     </style>
 </head>
 <body>
-    <!-- 进入引导弹窗 -->
+
+    <!-- ===== 引导弹窗 ===== -->
     <div class="pop-mask" id="entryPop">
         <div class="pop-box">
             <div class="pop-text">
@@ -838,191 +1257,228 @@
             </div>
         </div>
     </div>
-    <!-- 银河星云底层动画层（已隐藏，改用全局背景图） -->
-    <div class="nebula-layer"></div>
+
+    <!-- ===== 顶部导航 ===== -->
     <header>
         <div class="nav-box">
             <div class="logo">雨婷 紫色星云</div>
             <ul class="nav-menu">
                 <li><a href="#home" class="nav-link active" data-target="home">首页</a></li>
                 <li><a href="#works" class="nav-link" data-target="works">作品</a></li>
-                <li><a href="#video" class="nav-link" data-target="video">安利视频</a></li>
+                <li><a href="#video" class="nav-link" data-target="video">安利分享</a></li>
                 <li><a href="#message" class="nav-link" data-target="message">留言</a></li>
             </ul>
         </div>
     </header>
 
+    <!-- ===== 主内容 ===== -->
     <main>
+        <!-- 首页 -->
         <section id="home" class="active">
-            <h2 class="title">首页</h2>
-            <!-- 左右分栏容器：左资料 右轮播 -->
+            <h2 class="title">岳雨婷个人简介</h2>
             <div class="home-row">
-                <!-- 左侧【月光石 新粉指南】卡片 -->
                 <div class="info-card">
                     <h2>【月光石 新粉指南】</h2>
-                    <h3 style="text-align:center;margin-bottom:12px;color:var(--space-light-purple);font-size:18px;">岳雨婷个人简介</h3>
-
-                    <div class="info-item">
-                        <span class="info-label">✐本名</span>
-                        <span>岳雨婷</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">✐祖籍</span>
-                        <span>福建.霞浦</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">✐长居地</span>
-                        <span>江苏.苏州</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">✐出生日期</span>
-                        <span>2001年6月22日</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">✐身高</span>
-                        <span>168cm</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">✐星座</span>
-                        <span>巨蟹座♋</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">✐粉丝名</span>
-                        <span>月光石</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">✐应援色</span>
-                        <span>紫色</span>
-                    </div>
-                    <div class="info-item">
-                        <span class="info-label">✐应援口号</span>
-                        <span>月光相伴，雨你相随。</span>
-                    </div>
-
-                    <div class="info-divider"></div>
-
+                    <div class="info-item"><span class="info-label">✦本名</span><span>岳雨婷</span></div>
+                    <div class="info-item"><span class="info-label">✦祖籍</span><span>福建.霞浦</span></div>
+                    <div class="info-item"><span class="info-label">✦长居地</span><span>江苏.苏州</span></div>
+                    <div class="info-item"><span class="info-label">✦出生日期</span><span>2001年6月22日</span></div>
+                    <div class="info-item"><span class="info-label">✦身高</span><span>168cm</span></div>
+                    <div class="info-item"><span class="info-label">✦星座</span><span>巨蟹座♋</span></div>
+                    <div class="info-item"><span class="info-label">✦粉丝名</span><span>月光石</span></div>
+                    <div class="info-item"><span class="info-label">✦应援色</span><span>紫色</span></div>
+                    <div class="info-item"><span class="info-label">✦应援口号</span><span>月光相伴，雨你相随。</span></div>
                     <div class="tag-list">
                         <span class="tag">月光相伴，雨你相随</span>
                         <span class="tag">青年演员岳雨婷</span>
                     </div>
                 </div>
-                <!-- 右侧4图自动轮播 -->
-                <div class="carousel-wrap">
-                    <div class="carousel-item">
-                        <img src="https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zy.jpg" alt="写真1">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zy1.png" alt="写真2">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zy2.png" alt="写真3">
-                    </div>
-                    <div class="carousel-item">
-                        <img src="https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zy3.png" alt="写真4">
-                    </div>
+                <div class="carousel-wrap" id="carouselWrap">
+                    <div class="carousel-inner" id="carouselInner"></div>
+                    <button class="carousel-btn prev" id="carouselPrev" aria-label="上一张">‹</button>
+                    <button class="carousel-btn next" id="carouselNext" aria-label="下一张">›</button>
                 </div>
             </div>
         </section>
 
+        <!-- 作品 -->
         <section id="works">
-            <!-- 固定不动标题 -->
             <h2 class="title">雨婷的作品合集</h2>
-            <!-- 仅这个容器内的作品可以滚动 -->
             <div class="works-scroll-wrap">
                 <div class="works-grid">
-                    <!-- 新增《攻心为上》作品卡片，放在第一个位置 -->
-                    <a href="https://novelquickapp.com/s/ySnVVQ32S6g/" target="_blank" class="work-card">
-                        <img src="https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zy.jpg" alt="攻心为上小说封面">
-                        <div class="work-text">
-                            <h3>攻心为上</h3>
-                            <p>适演许耀月，点击卡片免费观看全集</p>
-                        </div>
-                    </a>
                     <div class="work-card">
-                        <img src="https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zy.jpg" alt="双人电竞氛围感写真">
+                        <div class="img-box">
+                            <img src="https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zp1.png" alt="攻心为上小说封面">
+                        </div>
+                        <div class="work-text">
+                            <a href="https://novelquickapp.com/s/yn0ZE3y3GbE/" target="_blank" style="text-decoration:none;">
+                                <h3>报告王爷，王妃又演上了</h3>
+                            </a>
+                            <div class="sub-desc">古装短剧 · 古风甜宠题材</div>
+                            <div class="work-tag-group">
+                                <span class="work-tag">古装</span>
+                                <span class="work-tag">甜宠</span>
+                                <span class="work-tag">小说改编</span>
+                                <span class="work-tag">女主舒蔓</span>
+                            </div>
+                            <p>岳雨婷饰演女主角舒蔓，灵动演绎古灵精怪、智勇双全的穿越王妃，全剧氛围感拉满，剧情轻松搞笑又暗藏深情，人物塑造鲜活立体。</p>
+                        </div>
+                    </div>
+                    <div class="work-card">
+                        <div class="img-box">
+                            <img src="https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zy.jpg" alt="双人电竞氛围感写真">
+                        </div>
                         <div class="work-text">
                             <h3>电竞双人氛围感大片</h3>
-                            <p>星云渐变背景人像摄影</p>
+                            <div class="sub-desc">赛博星云人像摄影作品</div>
+                            <div class="work-tag-group">
+                                <span class="work-tag">电竞风</span>
+                                <span class="work-tag">人像写真</span>
+                                <span class="work-tag">星云渐变背景</span>
+                                <span class="work-tag">氛围感拍摄</span>
+                            </div>
+                            <p>融合紫调星云与电竞赛博元素打造的人像大片，光影柔和高级，把温柔与酷感完美融合，适合壁纸、头像收藏，镜头表现力十足。</p>
                         </div>
                     </div>
                     <div class="work-card">
-                        <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="壁纸作品">
+                        <div class="img-box">
+                            <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="壁纸作品">
+                        </div>
                         <div class="work-text">
                             <h3>紫色梦幻星云壁纸</h3>
-                            <p>原创深空氛围感锁屏壁纸</p>
+                            <div class="sub-desc">深空治愈系锁屏视觉</div>
+                            <div class="work-tag-group">
+                                <span class="work-tag">星云壁纸</span>
+                                <span class="work-tag">紫色应援</span>
+                                <span class="work-tag">锁屏背景</span>
+                                <span class="work-tag">星空治愈</span>
+                            </div>
+                            <p>原创深空氛围感锁屏壁纸，以专属应援紫色为主色调，星云层次细腻柔和，星光细碎闪烁，日常手机、电脑桌面使用氛围感拉满。</p>
                         </div>
                     </div>
                     <div class="work-card">
-                        <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="摄影作品">
+                        <div class="img-box">
+                            <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="摄影作品">
+                        </div>
                         <div class="work-text">
                             <h3>既视感</h3>
-                            <p>纪实氛围感实拍</p>
+                            <div class="sub-desc">纪实氛围感人像实拍</div>
+                            <div class="work-tag-group">
+                                <span class="work-tag">纪实摄影</span>
+                                <span class="work-tag">生活感</span>
+                                <span class="work-tag">自然光影</span>
+                                <span class="work-tag">人像抓拍</span>
+                            </div>
+                            <p>纪实风氛围感实拍，摒弃厚重滤镜，依靠自然原生光影塑造温柔气质，捕捉松弛自然的状态，自带故事感，极具生活温柔气息。</p>
                         </div>
                     </div>
                     <div class="work-card">
-                        <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="图文文案">
+                        <div class="img-box">
+                            <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="图文文案">
+                        </div>
                         <div class="work-text">
                             <h3>温柔宇宙文案合集</h3>
-                            <p>短句、治愈系星空文案</p>
+                            <div class="sub-desc">治愈系星空短句文案</div>
+                            <div class="work-tag-group">
+                                <span class="work-tag">星空文案</span>
+                                <span class="work-tag">治愈短句</span>
+                                <span class="work-tag">应援文案</span>
+                                <span class="work-tag">朋友圈素材</span>
+                            </div>
+                            <p>整理数十条温柔星空治愈短句，适配应援、朋友圈、配图文案，字句温柔浪漫，贴合紫色星云主题，适合日常分享、追星配图使用。</p>
                         </div>
                     </div>
                     <div class="work-card">
-                        <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="兔子外套插画">
+                        <div class="img-box">
+                            <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="插画">
+                        </div>
                         <div class="work-text">
-                            <h3>兔子星空插画</h3>
-                            <p>手绘治愈星云插画</p>
+                            <h3>星空插画</h3>
+                            <div class="sub-desc">手绘治愈星云插画创作</div>
+                            <div class="work-tag-group">
+                                <span class="work-tag">手绘插画</span>
+                                <span class="work-tag">星云手绘</span>
+                                <span class="work-tag">治愈画风</span>
+                                <span class="work-tag">原创美术</span>
+                            </div>
+                            <p>纯手绘星云星空插画，柔和紫调渐变搭配细碎星光，画风温柔治愈，可作为头像、配图、手账素材，原创手绘质感独特。</p>
                         </div>
                     </div>
                     <div class="work-card">
-                        <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="海德薇emo猫">
+                        <div class="img-box">
+                            <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="小猫咪">
+                        </div>
                         <div class="work-text">
                             <h3>星云小猫</h3>
-                            <p>可爱动物系列绘图</p>
+                            <div class="sub-desc">梦幻星云动物系列绘图</div>
+                            <div class="work-tag-group">
+                                <span class="work-tag">萌宠绘图</span>
+                                <span class="work-tag">星云治愈</span>
+                                <span class="work-tag">可爱插画</span>
+                                <span class="work-tag">紫色梦幻</span>
+                            </div>
+                            <p>结合紫星云背景绘制的萌系小猫插画，柔和梦幻配色，软萌治愈画风，适合可爱风壁纸、表情包、社交配图使用。</p>
                         </div>
                     </div>
                     <div class="work-card">
-                        <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="24新音海报">
+                        <div class="img-box">
+                            <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="海报">
+                        </div>
                         <div class="work-text">
                             <h3>星云海报设计</h3>
-                            <p>活动视觉设计</p>
+                            <div class="sub-desc">紫星云主题活动视觉海报</div>
+                            <div class="work-tag-group">
+                                <span class="work-tag">视觉设计</span>
+                                <span class="work-tag">活动海报</span>
+                                <span class="work-tag">星云主视觉</span>
+                                <span class="work-tag">应援物料</span>
+                            </div>
+                            <p>以紫色星云为核心视觉的活动海报设计，层次丰富、氛围感强烈，可用于线下应援、线上活动宣传、粉丝活动物料制作。</p>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
 
+        <!-- ===== 安利分享（改造后） ===== -->
         <section id="video">
-            <h2 class="title">安利视频 | 所有人可上传分享</h2>
+            <h2 class="title">安利分享</h2>
 
-            <!-- 顶部筛选栏 匹配参考图 -->
-            <div class="video-filter-bar">
-                <select id="videoCate">
-                    <option value="all">ALL</option>
-                    <option value="img">图片</option>
-                    <option value="draw">绘/漫</option>
-                    <option value="fic">同人文</option>
-                </select>
-                <select id="videoSort">
-                    <option value="all">ALL</option>
-                </select>
-                <label>
-                    <input type="checkbox" id="videoEnd"> 完结
-                </label>
+            <!-- 分类 Tab 导航 -->
+            <div class="category-nav" id="categoryNav">
+                <button class="cat-tab active" data-cat="image">
+                    <span class="icon">🖼️</span> 图片 <span class="badge" id="badgeImage">0</span>
+                </button>
+                <button class="cat-tab" data-cat="text">
+                    <span class="icon">📝</span> 文字 <span class="badge" id="badgeText">0</span>
+                </button>
+                <button class="cat-tab" data-cat="video">
+                    <span class="icon">🎬</span> 视频 <span class="badge" id="badgeVideo">0</span>
+                </button>
             </div>
 
-            <!-- 添加视频输入模块 -->
-            <div class="video-input-box">
-                <input type="text" id="videoUrl" placeholder="粘贴B站/抖音/快手/视频号链接，粘贴后点击添加视频">
-                <button class="btn" id="addVideoBtn">添加视频</button>
-                <p style="margin-top:12px;opacity:0.7;">支持各平台视频链接，所有访客均可查看分享内容</p>
+            <!-- 上传区域 -->
+            <div class="share-upload-box" id="shareUploadBox">
+                <div class="upload-title">
+                    <span id="uploadIcon">🖼️</span>
+                    <span id="uploadLabel">上传图片</span>
+                </div>
+                <div class="share-upload-row" id="uploadFields">
+                    <input type="text" id="inputTitle" placeholder="标题（选填）" />
+                    <input type="text" id="inputContent" placeholder="图片链接（必填）" />
+                    <textarea id="inputDesc" placeholder="描述（选填）" rows="2"></textarea>
+                    <button class="btn-upload" id="uploadBtn">✦ 上传分享</button>
+                </div>
+                <p style="margin-top:12px;opacity:0.6;font-size:18px;text-align:center;" id="uploadHint">粘贴图片链接，点击上传</p>
             </div>
 
-            <!-- 瀑布流卡片容器 -->
-            <div class="video-list" id="videoContainer">
-                <div class="empty-tip">暂无安利视频，快来添加第一条吧！</div>
+            <!-- 展示区域 -->
+            <div class="share-display" id="shareDisplay">
+                <div class="share-empty">✨ 当前分类暂无内容，快来上传第一条吧～</div>
             </div>
         </section>
 
+        <!-- 留言 -->
         <section id="message">
             <h2 class="title">星云留言板</h2>
             <div class="msg-wrap">
@@ -1053,22 +1509,19 @@
         </section>
     </main>
 
-    <footer>
-        ©雨婷 | 紫色星云
-    </footer>
+    <footer>©雨婷 | 紫色星云</footer>
 
     <script>
-        // 弹窗关闭逻辑
+        // ================================================================
+        //  1. 弹窗
+        // ================================================================
         const popMask = document.getElementById('entryPop');
-        const btn1 = document.getElementById('btn1');
-        const btn2 = document.getElementById('btn2');
-        function closePop() {
-            popMask.style.display = 'none';
-        }
-        btn1.addEventListener('click', closePop);
-        btn2.addEventListener('click', closePop);
+        document.getElementById('btn1').addEventListener('click', () => popMask.style.display = 'none');
+        document.getElementById('btn2').addEventListener('click', () => popMask.style.display = 'none');
 
-        // 导航逻辑
+        // ================================================================
+        //  2. 导航切换
+        // ================================================================
         const navLinks = document.querySelectorAll('.nav-link');
         const sections = document.querySelectorAll('section');
         navLinks.forEach(link => {
@@ -1079,65 +1532,338 @@
                 sections.forEach(s => s.classList.remove('active'));
                 link.classList.add('active');
                 document.getElementById(targetId).classList.add('active');
-            })
-        })
+            });
+        });
 
-        // 本地视频存储渲染（瀑布流卡片）
-        const videoUrlInput = document.getElementById('videoUrl');
-        const addVideoBtn = document.getElementById('addVideoBtn');
-        const videoContainer = document.getElementById('videoContainer');
-        const cateSel = document.getElementById('videoCate');
-        const endCheck = document.getElementById('videoEnd');
+        // ================================================================
+        //  3. 轮播
+        // ================================================================
+        (function() {
+            const IMAGES = [
+                "https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zy.jpg",
+                "https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zy1.png",
+                "https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zy2.png",
+                "https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zy3.png",
+                "https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zy4.png",
+                "https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zy5.png",
+                "https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zy6.png",
+                "https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zy7.png",
+                "https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zy8.png",
+                "https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zy9.png",
+                "https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zy10.png",
+                "https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zy11.png",
+                "https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zy12.png"
+            ];
+            const inner = document.getElementById('carouselInner');
+            const prevBtn = document.getElementById('carouselPrev');
+            const nextBtn = document.getElementById('carouselNext');
+            const wrap = document.getElementById('carouselWrap');
+            let currentIndex = 0,
+                timer = null;
+            const INTERVAL = 2000;
+            IMAGES.forEach((src, idx) => {
+                const div = document.createElement('div');
+                div.className = 'carousel-item' + (idx === 0 ? ' active' : '');
+                const img = document.createElement('img');
+                img.src = src;
+                img.alt = '写真' + (idx + 1);
+                div.appendChild(img);
+                inner.appendChild(div);
+            });
+            const items = inner.querySelectorAll('.carousel-item');
 
-        // 模拟封面图（可自行替换）
-        const mockCovers = [
-            "https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zy.jpg",
-            "https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450"
-        ];
-
-        function renderVideoList(filterCate = "all", filterEnd = false) {
-            const videos = JSON.parse(localStorage.getItem('luMuVideo')) || [];
-            videoContainer.innerHTML = "";
-            if (!videos.length) {
-                videoContainer.innerHTML = `<div class="empty-tip">暂无安利视频，快来添加第一条吧！</div>`;
-                return;
+            function goTo(index) {
+                if (index < 0) index = IMAGES.length - 1;
+                if (index >= IMAGES.length) index = 0;
+                currentIndex = index;
+                items.forEach((el, i) => el.classList.toggle('active', i === currentIndex));
+                resetTimer();
             }
-            videos.forEach((item, idx) => {
-                const cover = mockCovers[idx % mockCovers.length];
-                const html = `
-                    <div class="video-item">
-                        <img class="video-thumb" src="${cover}" alt="视频封面">
-                        <div class="video-card-text">
-                            <div class="video-card-title">安利视频 #${idx+1}</div>
-                            <div class="video-card-desc">分享链接：${item.slice(0,30)}...</div>
+
+            function next() { goTo(currentIndex + 1); }
+
+            function prev() { goTo(currentIndex - 1); }
+
+            function resetTimer() {
+                if (timer) { clearInterval(timer);
+                    timer = null; }
+                timer = setInterval(next, INTERVAL);
+            }
+            prevBtn.addEventListener('click', (e) => { e.stopPropagation();
+                prev(); });
+            nextBtn.addEventListener('click', (e) => { e.stopPropagation();
+                next(); });
+            wrap.addEventListener('mouseenter', () => { if (timer) { clearInterval(timer);
+                    timer = null; } });
+            wrap.addEventListener('mouseleave', () => { if (!timer) resetTimer(); });
+            let touchStartX = 0;
+            wrap.addEventListener('touchstart', (e) => { touchStartX = e.changedTouches[0].screenX; }, { passive: true });
+            wrap.addEventListener('touchend', (e) => {
+                const diff = touchStartX - e.changedTouches[0].screenX;
+                if (Math.abs(diff) > 40) { if (diff > 0) next();
+                    else prev(); }
+            }, { passive: true });
+            document.addEventListener('keydown', (e) => {
+                if (!document.getElementById('home').classList.contains('active')) return;
+                if (e.key === 'ArrowLeft') prev();
+                if (e.key === 'ArrowRight') next();
+            });
+            resetTimer();
+        })();
+
+        // ================================================================
+        //  4. 安利分享 — 分类 Tab + 上传 + 展示 (新)
+        // ================================================================
+        (function() {
+            const STORAGE_KEY = 'luMuShare';
+
+            // ----- 工具 -----
+            function loadData() {
+                try {
+                    const raw = localStorage.getItem(STORAGE_KEY);
+                    if (raw) {
+                        const data = JSON.parse(raw);
+                        if (Array.isArray(data)) return data;
+                    }
+                } catch (e) {}
+                return [];
+            }
+
+            function saveData(data) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
+            }
+
+            // 迁移旧视频数据
+            function migrateOldData() {
+                const oldKey = 'luMuVideo';
+                const oldData = localStorage.getItem(oldKey);
+                if (oldData) {
+                    try {
+                        const list = JSON.parse(oldData);
+                        if (Array.isArray(list) && list.length) {
+                            const current = loadData();
+                            let migrated = 0;
+                            list.forEach(url => {
+                                if (url && typeof url === 'string' && url.trim()) {
+                                    // 检查是否已存在
+                                    const exists = current.some(item =>
+                                        item.type === 'video' && item.content === url.trim()
+                                    );
+                                    if (!exists) {
+                                        current.push({
+                                            id: Date.now() + Math.random() * 1000 + migrated,
+                                            type: 'video',
+                                            title: '安利视频',
+                                            content: url.trim(),
+                                            desc: '来自旧版视频分享',
+                                            time: new Date().toLocaleString()
+                                        });
+                                        migrated++;
+                                    }
+                                }
+                            });
+                            if (migrated) {
+                                saveData(current);
+                            }
+                            // 删除旧key
+                            localStorage.removeItem(oldKey);
+                        }
+                    } catch (e) {}
+                }
+            }
+            migrateOldData();
+
+            // ----- DOM 引用 -----
+            const tabs = document.querySelectorAll('.cat-tab');
+            const badgeImage = document.getElementById('badgeImage');
+            const badgeText = document.getElementById('badgeText');
+            const badgeVideo = document.getElementById('badgeVideo');
+            const uploadIcon = document.getElementById('uploadIcon');
+            const uploadLabel = document.getElementById('uploadLabel');
+            const uploadHint = document.getElementById('uploadHint');
+            const inputTitle = document.getElementById('inputTitle');
+            const inputContent = document.getElementById('inputContent');
+            const inputDesc = document.getElementById('inputDesc');
+            const uploadBtn = document.getElementById('uploadBtn');
+            const display = document.getElementById('shareDisplay');
+
+            let currentCategory = 'image'; // 'image' | 'text' | 'video'
+
+            // 分类配置
+            const CAT_CONFIG = {
+                image: {
+                    icon: '🖼️',
+                    label: '上传图片',
+                    contentPlaceholder: '图片链接（必填）',
+                    descPlaceholder: '描述（选填）',
+                    hint: '粘贴图片链接，点击上传',
+                    emptyMsg: '✨ 暂无图片分享，快来上传第一张吧～'
+                },
+                text: {
+                    icon: '📝',
+                    label: '上传文字',
+                    contentPlaceholder: '文字内容（必填）',
+                    descPlaceholder: '描述（选填）',
+                    hint: '写下你想分享的文字内容',
+                    emptyMsg: '✨ 暂无文字分享，快来写下第一条吧～'
+                },
+                video: {
+                    icon: '🎬',
+                    label: '上传视频',
+                    contentPlaceholder: '视频链接（必填）',
+                    descPlaceholder: '描述（选填）',
+                    hint: '粘贴视频链接，点击上传',
+                    emptyMsg: '✨ 暂无视频分享，快来上传第一条吧～'
+                }
+            };
+
+            // ----- 渲染 -----
+            function render() {
+                const data = loadData();
+                const filtered = data.filter(item => item.type === currentCategory);
+
+                // 更新badge
+                const countImage = data.filter(item => item.type === 'image').length;
+                const countText = data.filter(item => item.type === 'text').length;
+                const countVideo = data.filter(item => item.type === 'video').length;
+                badgeImage.textContent = countImage;
+                badgeText.textContent = countText;
+                badgeVideo.textContent = countVideo;
+
+                // 更新上传区UI
+                const cfg = CAT_CONFIG[currentCategory];
+                uploadIcon.textContent = cfg.icon;
+                uploadLabel.textContent = cfg.label;
+                inputContent.placeholder = cfg.contentPlaceholder;
+                inputDesc.placeholder = cfg.descPlaceholder;
+                uploadHint.textContent = cfg.hint;
+
+                // 清空输入
+                inputTitle.value = '';
+                inputContent.value = '';
+                inputDesc.value = '';
+
+                // 展示
+                if (!filtered.length) {
+                    display.innerHTML = `<div class="share-empty">${cfg.emptyMsg}</div>`;
+                    return;
+                }
+
+                let html = '';
+                filtered.forEach(item => {
+                    const typeLabel = { image: '🖼️ 图片', text: '📝 文字', video: '🎬 视频' } [item.type] || item
+                    .type;
+                    let mediaHtml = '';
+                    if (item.type === 'image') {
+                        mediaHtml =
+                            `<img class="card-media" src="${item.content}" alt="${item.title || '图片'}" onerror="this.style.display='none'">`;
+                    } else if (item.type === 'video') {
+                        mediaHtml =
+                            `<img class="card-media" src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="视频封面" style="opacity:0.7;">`;
+                    } else {
+                        mediaHtml =
+                            `<div class="card-media" style="display:flex;align-items:center;justify-content:center;background:rgba(104,28,200,0.15);font-size:48px;color:var(--space-light-purple);">📝</div>`;
+                    }
+                    html += `
+                        <div class="share-card" data-id="${item.id}">
+                            <span class="card-type-tag">${typeLabel}</span>
+                            <button class="card-del" data-id="${item.id}">✕ 删除</button>
+                            ${mediaHtml}
+                            <div class="card-body">
+                                <div class="card-title">${item.title || '无标题'}</div>
+                                <div class="card-desc">${item.desc || item.content || ''}</div>
+                                <div class="card-time">${item.time || ''}</div>
+                            </div>
                         </div>
-                        <svg class="video-link-icon" viewBox="0 0 24 24" fill="#d0a8ff">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 17.93c-3.95-.49-7-3.85-7-7.93 0-.62.08-1.21.21-1.79L9 15v1c0 1.1.9 2 2 2v1.93zm6.9-2.54c-.26-.81-1-1.39-1.9-1.39h-1v-3c0-.55-.45-1-1-1H8v-2h2c.55 0 1-.45 1-1V7h2c1.1 0 2-.9 2-2v-.41c2.93 1.19 5 4.06 5 7.41 0 2.08-.8 3.97-2.1 5.39z"/>
-                        </svg>
-                    </div>
-                `;
-                videoContainer.innerHTML += html;
-            })
-        }
+                    `;
+                });
+                display.innerHTML = html;
 
-        // 初始加载
-        renderVideoList();
-        // 筛选监听
-        cateSel.addEventListener('change', ()=>renderVideoList(cateSel.value, endCheck.checked));
-        endCheck.addEventListener('change', ()=>renderVideoList(cateSel.value, endCheck.checked));
+                // 删除事件
+                display.querySelectorAll('.card-del').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        const id = this.dataset.id;
+                        if (!confirm('确定要删除这条分享吗？')) return;
+                        let data = loadData();
+                        data = data.filter(item => String(item.id) !== String(id));
+                        saveData(data);
+                        render();
+                    });
+                });
+            }
 
-        addVideoBtn.addEventListener('click', ()=>{
-            const url = videoUrlInput.value.trim();
-            if(!url) return alert('请粘贴视频链接');
-            const allVideo = JSON.parse(localStorage.getItem('luMuVideo')) || [];
-            allVideo.push(url);
-            localStorage.setItem('luMuVideo', JSON.stringify(allVideo));
-            renderVideoList(cateSel.value, endCheck.checked);
-            videoUrlInput.value = '';
-            alert('视频添加成功，所有人都能浏览！');
-        })
+            // ----- 切换分类 -----
+            function switchCategory(cat) {
+                currentCategory = cat;
+                tabs.forEach(tab => {
+                    tab.classList.toggle('active', tab.dataset.cat === cat);
+                });
+                render();
+            }
 
-        // Supabase 留言逻辑
+            // ----- 上传 -----
+            function handleUpload() {
+                const title = inputTitle.value.trim() || '无标题';
+                const content = inputContent.value.trim();
+                const desc = inputDesc.value.trim() || '';
+
+                if (!content) {
+                    alert('请填写内容（图片链接 / 文字内容 / 视频链接）');
+                    return;
+                }
+
+                const data = loadData();
+                // 检查是否已存在相同内容（同类型）
+                const exists = data.some(item =>
+                    item.type === currentCategory && item.content === content
+                );
+                if (exists) {
+                    alert('该内容已存在，请勿重复上传');
+                    return;
+                }
+
+                data.push({
+                    id: Date.now() + Math.random() * 1000,
+                    type: currentCategory,
+                    title: title,
+                    content: content,
+                    desc: desc,
+                    time: new Date().toLocaleString()
+                });
+                saveData(data);
+                render();
+                alert('✅ 分享成功！已存入「' + CAT_CONFIG[currentCategory].label + '」分类');
+            }
+
+            // ----- 事件绑定 -----
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    const cat = this.dataset.cat;
+                    if (cat !== currentCategory) {
+                        switchCategory(cat);
+                    }
+                });
+            });
+
+            uploadBtn.addEventListener('click', handleUpload);
+
+            // 回车快捷上传
+            inputContent.addEventListener('keydown', (e) => {
+                if (e.key === 'Enter' && !e.shiftKey) {
+                    e.preventDefault();
+                    handleUpload();
+                }
+            });
+
+            // 初始化默认选中图片
+            switchCategory('image');
+        })();
+
+
+        // ================================================================
+        //  5. Supabase 留言 (保持不变)
+        // ================================================================
         window.addEventListener('load', async () => {
             const SUPABASE_URL = "https://ltiilggogjtcljeyovvt.supabase.co";
             const SUPABASE_ANON_KEY = "sb_publishable_HHbWLOTam-gem4gg-zQ0uQ_6PKmDS0s";
@@ -1157,11 +1883,11 @@
                 const currentName = nameInput.value.trim();
                 const { data, error } = await supabase.from('yt').select('*').order('time', { ascending: false });
                 msgList.innerHTML = '';
-                if(error) {
+                if (error) {
                     msgList.innerHTML = `<div class="empty-tip">留言加载失败，请开启RLS并添加author_name字段</div>`;
                     return;
                 }
-                if(!data?.length) {
+                if (!data?.length) {
                     msgList.innerHTML = `<div class="empty-tip">星云暂无留言，快来留下第一条星光寄语吧～</div>`;
                     return;
                 }
@@ -1176,23 +1902,23 @@
                             <div class="msg-content">${item.content}</div>
                         </div>
                     `;
-                })
+                });
 
                 document.querySelectorAll('.del-msg-btn').forEach(btn => {
-                    btn.onclick = async function(){
+                    btn.onclick = async function() {
                         const itemDom = this.closest('.msg-item');
                         const delId = itemDom.dataset.id;
                         const currentName = nameInput.value.trim();
-                        if(currentName !== itemDom.dataset.author && currentName !== 'admin'){
+                        if (currentName !== itemDom.dataset.author && currentName !== 'admin') {
                             alert("仅留言作者和管理员可删除本条留言");
                             return;
                         }
-                        await supabase.rpc('set_user_name', {uname: currentName});
-                        const {err} = await supabase.from('yt').delete().eq('id', delId);
-                        if(err) alert("删除失败：无权限");
+                        await supabase.rpc('set_user_name', { uname: currentName });
+                        const { err } = await supabase.from('yt').delete().eq('id', delId);
+                        if (err) alert("删除失败：无权限");
                         loadMsg();
-                    }
-                })
+                    };
+                });
             }
 
             document.getElementById('msgForm').addEventListener('submit', async e => {
@@ -1200,22 +1926,22 @@
                 if (!supabase) return alert("数据库连接失败");
                 const name = nameInput.value.trim();
                 const content = document.getElementById('userMsg').value.trim();
-                if(!name || !content) return alert('请填写昵称和留言');
+                if (!name || !content) return alert('请填写昵称和留言');
                 const time = new Date().toLocaleString();
                 const { error } = await supabase.from('yt').insert([
                     { name, content, time, author_name: name }
                 ]);
-                if(error) return alert("提交失败："+error.message);
+                if (error) return alert("提交失败：" + error.message);
                 loadMsg();
                 e.target.reset();
                 alert('留言提交成功，存入紫色星云，全站访客可见！');
-            })
+            });
 
             nameInput.addEventListener('input', loadMsg);
             loadMsg();
-            const {errorRpc} = await supabase.rpc('create_set_user_func');
-            if(errorRpc) console.log("函数已存在无需重复创建");
-        })
+            const { errorRpc } = await supabase.rpc('create_set_user_func');
+            if (errorRpc) console.log("函数已存在无需重复创建");
+        });
     </script>
 </body>
 </html>
