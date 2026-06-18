@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>橹穆 | 个人紫色主页</title>
+    <!-- Supabase SDK先加载，但执行逻辑延迟 -->
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <style>
+        :root {
+            --purple-dark: #4B0082;
+            --purple-main: #8A2BE2;
+            --purple-light: #b886fd;
+            --purple-bg: #1c0a2e;
+            --purple-card: rgba(138, 43, 226, 0.15);
+            --purple-card-strong: rgba(138, 43, 226, 0.25);
+            --text-white: #f8f5ff;
+            --text-gray: #c9b6e4;
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Microsoft Yahei", sans-serif;
+        }
+        body {
+            background: var(--purple-bg);
+            color: var(--text-white);
+            background-image: radial-gradient(#62169c 1px, transparent 1px);
+            background-size: 30px 30px;
+        }
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: linear-gradient(90deg, var(--purple-dark), var(--purple-main));
+            box-shadow: 0 2px 12px #62169c80;
+            z-index: 9999;
+        }
+        .nav-box {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 14px 20px;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 2px;
+        }
+        .nav-menu {
+            display: flex;
+            gap: 36px;
+            list-style: none;
+        }
+        .nav-menu li a {
+            color: var(--text-white);
+            text-decoration: none;
+            font-size: 17px;
+            padding: 8px 12px;
+            border-radius: 6px;
+            transition: 0.3s ease;
+            pointer-events: auto !important;
+            position: relative;
+            z-index: 99999;
+        }
+        .nav-menu li a:hover, .nav-menu li a.active {
+            background: var(--purple-light);
+            color: var(--purple-dark);
+        }
+        main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding-top: 90px;
+            padding-bottom: 50px;
+        }
+        section {
+            min-height: calc(100vh - 90px);
+            padding: 40px 20px;
+            display: none;
+        }
+        section.active {
+            display: block;
+        }
+        .title {
+            text-align: center;
+            font-size: 36px;
+            margin-bottom: 40px;
+            color: var(--purple-light);
+            text-shadow: 0 0 8px #b886fd70;
+        }
+        /* 首页 */
+        .home-content {
+            text-align: center;
+            margin-top: 100px;
+        }
+        .home-content h2 {
+            font-size: 48px;
+            margin-bottom: 20px;
+            background: linear-gradient(90deg, #fff, var(--purple-light));
+            -webkit-background-clip: text;
+            color: transparent;
+        }
+        .home-content p {
+            font-size: 18px;
+            line-height: 2;
+            max-width: 700px;
+            margin: 0 auto;
+            opacity: 0.9;
+        }
+        .tag-list {
+            margin-top: 40px;
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+        .tag {
+            padding: 8px 18px;
+            background: var(--purple-card);
+            border: 1px solid var(--purple-light);
+            border-radius: 30px;
+        }
+        /* 作品板块 */
+        .works-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 24px;
+        }
+        .work-card {
+            background: var(--purple-card);
+            border: 1px solid #8a2be240;
+            border-radius: 12px;
+            overflow: hidden;
+            transition: 0.3s;
+        }
+        .work-card:hover {
+            box-shadow: 0 0 20px var(--purple-light);
+            transform: translateY(-6px);
+        }
+        .work-card img {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            background: #30104f;
+        }
+        .work-text {
+            padding: 16px;
+        }
+        .work-text h3 {
+            margin-bottom: 8px;
+            color: var(--purple-light);
+        }
+        /* 视频板块 */
+        .video-input-box {
+            max-width: 800px;
+            margin: 0 auto 40px;
+            background: var(--purple-card);
+            padding: 24px;
+            border-radius: 12px;
+        }
+        .video-input-box input {
+            width: 100%;
+            padding: 12px 16px;
+            border-radius: 8px;
+            border: 1px solid var(--purple-light);
+            background: #270f3d;
+            color: #fff;
+            font-size: 16px;
+            margin-bottom: 16px;
+        }
+        .btn {
+            padding: 10px 26px;
+            background: var(--purple-main);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.3s;
+        }
+        .btn:hover {
+            background: var(--purple-light);
+            color: var(--purple-dark);
+        }
+        .video-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+            gap: 24px;
+        }
+        .video-item {
+            background: #270f3d;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+        .video-item iframe {
+            width: 100%;
+            height: 200px;
+            border: none;
+        }
+
+        /* ========== 全新优化留言页面布局 ========== */
+        .msg-wrap {
+            display: grid;
+            grid-template-columns: 360px 1fr;
+            gap: 32px;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: start;
+        }
+        /* 左侧：留言发布表单 */
+        .msg-left {
+            position: sticky;
+            top: 100px;
+        }
+        .msg-form {
+            background: var(--purple-card-strong);
+            padding: 28px;
+            border-radius: 16px;
+            box-shadow: 0 0 16px rgba(138,43,226,0.18);
+            border: 1px solid rgba(184,134,253,0.2);
+        }
+        .msg-form h3 {
+            text-align: center;
+            margin-bottom: 24px;
+            color: var(--purple-light);
+            font-size: 22px;
+        }
+        .msg-form input, .msg-form textarea {
+            width: 100%;
+            padding: 14px;
+            margin-bottom: 18px;
+            background: #270f3d;
+            border: 1px solid rgba(184,134,253,0.3);
+            border-radius: 10px;
+            color: #fff;
+            font-size: 16px;
+            transition: 0.2s;
+        }
+        .msg-form input:focus, .msg-form textarea:focus {
+            outline: none;
+            border-color: var(--purple-light);
+            box-shadow: 0 0 0 3px rgba(184,134,253,0.15);
+        }
+        .msg-form textarea {
+            min-height: 140px;
+            resize: vertical;
+        }
+        .msg-form .btn {
+            width: 100%;
+            padding: 12px;
+            font-size: 17px;
+        }
+        /* 右侧区域 */
+        .msg-right {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+        }
+        /* 右侧顶部作品卡片 */
+        .msg-work-card {
+            background: var(--purple-card-strong);
+            border-radius: 16px;
+            overflow: hidden;
+            box-shadow: 0 0 16px rgba(138,43,226,0.18);
+            border: 1px solid rgba(184,134,253,0.2);
+        }
+        .msg-work-card img {
+            width: 100%;
+            height: 240px;
+            object-fit: cover;
+            background: #30104f;
+        }
+        .msg-work-text {
+            padding: 20px;
+            text-align: center;
+        }
+        .msg-work-text h3 {
+            color: var(--purple-light);
+            margin-bottom: 8px;
+            font-size: 20px;
+        }
+        .msg-work-text p {
+            color: var(--text-gray);
+        }
+        /* 云端留言列表容器 */
+        .msg-list-wrap h3 {
+            text-align: center;
+            margin-bottom: 24px;
+            color: var(--purple-light);
+            font-size: 22px;
+        }
+        #msgList {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        .msg-item {
+            background: var(--purple-card);
+            padding: 24px;
+            border-radius: 14px;
+            border-left: 5px solid var(--purple-light);
+            position: relative;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
+            transition: 0.2s;
+        }
+        .msg-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 18px rgba(138,43,226,0.12);
+        }
+        .msg-name {
+            color: var(--purple-light);
+            font-weight: bold;
+            font-size: 19px;
+            margin-bottom: 6px;
+        }
+        .msg-time {
+            font-size: 13px;
+            opacity: 0.7;
+            margin-bottom: 12px;
+            color: var(--text-gray);
+        }
+        .msg-content {
+            line-height: 1.8;
+            font-size: 16px;
+            color: #f0e6ff;
+        }
+        .del-msg-btn {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+            background: #992244;
+            color: #fff;
+            border: none;
+            padding: 5px 12px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 13px;
+            transition: 0.2s;
+        }
+        .del-msg-btn:hover {
+            background: #cc3355;
+        }
+        .empty-tip {
+            text-align: center;
+            padding: 40px 0;
+            color: var(--text-gray);
+            font-size: 17px;
+        }
+        /* 移动端留言适配：左右变上下 */
+        @media (max-width:992px) {
+            .msg-wrap {
+                grid-template-columns: 1fr;
+            }
+            .msg-left {
+                position: static;
+            }
+        }
+        /* 页脚 */
+        footer {
+            text-align: center;
+            padding: 20px;
+            opacity: 0.6;
+            font-size: 14px;
+        }
+        @media (max-width:768px) {
+            .nav-box {
+                flex-direction: column;
+                gap:12px;
+            }
+            .nav-menu {
+                gap:12px;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .video-list {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="nav-box">
+            <div class="logo">橹穆 Sweet主页</div>
+            <ul class="nav-menu">
+                <li><a href="#home" class="nav-link active" data-target="home">首页</a></li>
+                <li><a href="#works" class="nav-link" data-target="works">作品</a></li>
+                <li><a href="#video" class="nav-link" data-target="video">安利视频</a></li>
+                <li><a href="#message" class="nav-link" data-target="message">留言</a></li>
+            </ul>
+        </div>
+    </header>
+
+    <main>
+        <section id="home" class="active">
+            <h2 class="title">欢迎来到我的紫色小世界</h2>
+            <div class="home-content">
+                <h2>橹穆 · Sweet</h2>
+                <p>壁纸、文案、摄影、日常分享全部收录于此，这里存放所有温柔与浪漫。任何人都可以浏览、分享视频、留下留言，记录每一份心动瞬间。</p>
+                <div class="tag-list">
+                    <span class="tag">壁纸公之于众</span>
+                    <span class="tag">新音缘起</span>
+                    <span class="tag">祝你星途璀璨</span>
+                    <span class="tag">落叶知秋</span>
+                    <span class="tag">多远都要在一起</span>
+                    <span class="tag">today is perfect with you</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="works">
+            <h2 class="title">我的作品合集</h2>
+            <div class="works-grid">
+                <div class="work-card">
+                    <img alt="壁纸作品">
+                    <div class="work-text">
+                        <h3>紫色梦幻壁纸</h3>
+                        <p>原创氛围感锁屏壁纸</p>
+                    </div>
+                </div>
+                <div class="work-card">
+                    <img alt="摄影作品">
+                    <div class="work-text">
+                        <h3>楼道庆生摄影</h3>
+                        <p>纪实氛围感实拍</p>
+                    </div>
+                </div>
+                <div class="work-card">
+                    <img alt="图文文案">
+                    <div class="work-text">
+                        <h3>温柔文案合集</h3>
+                        <p>短句、治愈系文案</p>
+                    </div>
+                </div>
+                <div class="work-card">
+                    <img alt="兔子外套插画">
+                    <div class="work-text">
+                        <h3>兔子外套插画</h3>
+                        <p>手绘治愈插画</p>
+                    </div>
+                </div>
+                <div class="work-card">
+                    <img alt="海德薇emo猫">
+                    <div class="work-text">
+                        <h3>海德薇和emo猫</h3>
+                        <p>可爱动物系列绘图</p>
+                    </div>
+                </div>
+                <div class="work-card">
+                    <img alt="24新音海报">
+                    <div class="work-text">
+                        <h3>24新音海报设计</h3>
+                        <p>活动视觉设计作品</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="video">
+            <h2 class="title">安利视频 | 所有人可上传分享</h2>
+            <div class="video-input-box">
+                <input type="text" id="videoUrl" placeholder="粘贴B站/抖音/快手/视频号链接，粘贴后点击添加视频">
+                <button class="btn" id="addVideoBtn">添加视频</button>
+                <p style="margin-top:12px;opacity:0.7;">支持各平台视频链接，所有访客均可查看分享内容</p>
+            </div>
+            <div class="video-list" id="videoContainer"></div>
+        </section>
+
+        <!-- 优化后留言页面：左表单 右作品+留言列表 -->
+        <section id="message">
+            <h2 class="title">留言板 · 欢迎所有人留下想说的话</h2>
+            <div class="msg-wrap">
+                <!-- 左侧：发布留言表单 -->
+                <div class="msg-left">
+                    <form class="msg-form" id="msgForm">
+                        <h3>写下你的留言</h3>
+                        <input type="text" id="userName" placeholder="你的昵称" required>
+                        <textarea id="userMsg" placeholder="写下想说的话..." required></textarea>
+                        <button class="btn" type="submit">提交留言</button>
+                    </form>
+                </div>
+
+                <!-- 右侧：作品展示 + 云端留言列表 -->
+                <div class="msg-right">
+                    <!-- 顶部作品卡片 -->
+                    <div class="msg-work-card">
+                        <img alt="紫色梦幻壁纸">
+                        <div class="msg-work-text">
+                            <h3>紫色梦幻壁纸</h3>
+                            <p>原创氛围感锁屏作品</p>
+                        </div>
+                    </div>
+                    <!-- 留言列表区域 -->
+                    <div class="msg-list-wrap">
+                        <h3>大家的留言</h3>
+                        <div id="msgList">
+                            <!-- 云端留言自动渲染在这里 -->
+                            <div class="empty-tip">暂无留言，快来第一条吧～</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        © 2026 橹穆 sweet | 紫色个人主页 · 所有访客留言云端互通公开可见
+    </footer>
+
+    <script>
+        // ========== 第一部分：导航逻辑【最先执行，完全独立】==========
+        const navLinks = document.querySelectorAll('.nav-link');
+        const sections = document.querySelectorAll('section');
+        navLinks.forEach(link => {
+            link.addEventListener('click', e => {
+                e.preventDefault();
+                const targetId = link.dataset.target;
+                navLinks.forEach(l => l.classList.remove('active'));
+                sections.forEach(s => s.classList.remove('active'));
+                link.classList.add('active');
+                document.getElementById(targetId).classList.add('active');
+            })
+        })
+
+        // ========== 第二部分：本地视频功能（无数据库依赖）==========
+        const videoUrlInput = document.getElementById('videoUrl');
+        const addVideoBtn = document.getElementById('addVideoBtn');
+        const videoContainer = document.getElementById('videoContainer');
+        function loadVideo() {
+            const videos = JSON.parse(localStorage.getItem('luMuVideo')) || [];
+            videoContainer.innerHTML = '';
+            videos.forEach(url => {
+                let iframeSrc = '';
+                if(url.includes('bilibili')){
+                    const bv = url.match(/BV\w+/)[0];
+                    iframeSrc = `https://player.bilibili.com/player.html?bvid=${bv}&page=1`;
+                }else{
+                    iframeSrc = url;
+                }
+                const html = `<div class="video-item"><iframe src="${iframeSrc}" allowfullscreen></iframe></div>`;
+                videoContainer.innerHTML += html;
+            })
+        }
+        loadVideo();
+        addVideoBtn.addEventListener('click', ()=>{
+            const url = videoUrlInput.value.trim();
+            if(!url) return alert('请粘贴视频链接');
+            const allVideo = JSON.parse(localStorage.getItem('luMuVideo')) || [];
+            allVideo.push(url);
+            localStorage.setItem('luMuVideo', JSON.stringify(allVideo));
+            loadVideo();
+            videoUrlInput.value = '';
+            alert('视频添加成功，所有人都能浏览！');
+        })
+
+        // ========== 第三部分：数据库留言逻辑【延迟执行，报错不影响页面】==========
+        window.addEventListener('load', async () => {
+            const SUPABASE_URL = "https://ltiilggogjtcljeyovvt.supabase.co";
+            const SUPABASE_ANON_KEY = "sb_publishable_HHbWLOTam-gem4gg-zQ0uQ_6PKmDS0s";
+            let supabase = null;
+            try {
+                supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+            } catch (err) {
+                console.warn("数据库初始化失败，仅留言功能失效：", err);
+                return;
+            }
+
+            // 读取留言渲染到右侧列表
+            async function loadMsg() {
+                if (!supabase) return;
+                const msgList = document.getElementById('msgList');
+                const { data, error } = await supabase.from('yt').select('*').order('time', { ascending: false });
+                msgList.innerHTML = '';
+                if(error) {
+                    console.error("读取留言失败", error);
+                    msgList.innerHTML = `<div class="empty-tip">留言加载失败，请检查数据库</div>`;
+                    return;
+                }
+                if(!data?.length) {
+                    msgList.innerHTML = `<div class="empty-tip">暂无留言，快来第一条吧～</div>`;
+                    return;
+                }
+                data.forEach(item => {
+                    msgList.innerHTML += `
+                        <div class="msg-item" data-id="${item.id}">
+                            <button class="del-msg-btn">删除</button>
+                            <div class="msg-name">${item.name}</div>
+                            <div class="msg-time">${item.time}</div>
+                            <div class="msg-content">${item.content}</div>
+                        </div>
+                    `;
+                })
+                // 删除按钮绑定
+                document.querySelectorAll('.del-msg-btn').forEach(btn => {
+                    btn.onclick = async function(){
+                        const id = this.closest('.msg-item').dataset.id;
+                        await supabase.from('yt').delete().eq('id', id);
+                        loadMsg();
+                    }
+                })
+            }
+            loadMsg();
+
+            // 提交留言表单
+            document.getElementById('msgForm').addEventListener('submit', async e => {
+                e.preventDefault();
+                if (!supabase) return alert("数据库连接失败，无法提交留言");
+                const name = document.getElementById('userName').value.trim();
+                const content = document.getElementById('userMsg').value.trim();
+                if(!name || !content) return alert('请填写昵称和留言');
+                const { error } = await supabase.from('yt').insert([{name, content, time: new Date().toLocaleString()}]);
+                if(error) return alert("提交失败："+error.message);
+                loadMsg();
+                e.target.reset();
+                alert('留言提交成功，全站访客可见！');
+            })
+        })
+    </script>
+</body>
+</html>
