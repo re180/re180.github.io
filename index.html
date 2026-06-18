@@ -7,16 +7,16 @@
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
-            /* 深空宇宙紫配色体系 */
-            --space-black: #080414;
-            --space-dark-purple: #300a66;
-            --space-main-purple: #7020d0;
-            --space-light-purple: #c896ff;
-            --space-glow: #e0c4ff;
-            --card-bg: rgba(100, 30, 190, 0.12);
-            --card-strong-bg: rgba(110, 40, 200, 0.22);
-            --text-white: #f8f5ff;
-            --text-gray: #d4c0f0;
+            /* 深空银河紫配色 */
+            --space-black: #060210;
+            --space-dark-purple: #280858;
+            --space-main-purple: #681cc8;
+            --space-light-purple: #d0a8ff;
+            --space-glow: #f0e0ff;
+            --card-bg: rgba(90, 25, 170, 0.10);
+            --card-strong-bg: rgba(100, 30, 185, 0.20);
+            --text-white: #fefcff;
+            --text-gray: #dccaff;
             --transition-base: all 0.35s cubic-bezier(0.2, 0, 0.2, 1);
         }
         * {
@@ -26,32 +26,32 @@
             font-family: "Microsoft Yahei", sans-serif;
         }
         body {
-            /* 动态宇宙星空背景 */
             background: var(--space-black);
             color: var(--text-white);
             position: relative;
             overflow-x: hidden;
         }
-        /* 星空闪烁动画层 */
+        /* 第一层：细碎银河颗粒横向流动 */
         body::before {
             content: "";
             position: fixed;
             top: 0;
             left: 0;
-            width: 100%;
-            height: 100%;
+            width: 300%;
+            height: 300%;
             background-image:
-                radial-gradient(1px 1px at 20px 30px, var(--space-glow), transparent),
-                radial-gradient(1px 1px at 40px 70px, var(--space-light-purple), transparent),
-                radial-gradient(1.2px 1.2px at 90px 40px, #fff, transparent),
-                radial-gradient(0.8px 0.8px at 130px 90px, var(--space-glow), transparent),
-                radial-gradient(1.5px 1.5px at 170px 120px, var(--space-light-purple), transparent);
-            background-size: 200px 200px;
-            animation: starTwinkle 8s ease-in-out infinite alternate;
-            z-index: -2;
-            opacity: 0.6;
+                radial-gradient(0.4px 0.4px at 40px 60px, #fff, transparent),
+                radial-gradient(0.6px 0.6px at 120px 180px, var(--space-light-purple), transparent),
+                radial-gradient(0.3px 0.3px at 200px 90px, var(--space-glow), transparent),
+                radial-gradient(0.7px 0.7px at 280px 220px, #fff, transparent),
+                radial-gradient(0.5px 0.5px at 360px 140px, var(--space-light-purple), transparent),
+                radial-gradient(0.3px 0.3px at 420px 300px, var(--space-glow), transparent);
+            background-size: 400px 400px;
+            animation: starFlow 40s linear infinite;
+            z-index: -3;
+            opacity: 0.55;
         }
-        /* 星云渐变流动层 */
+        /* 第二层：远近星星分层闪烁 */
         body::after {
             content: "";
             position: fixed;
@@ -59,19 +59,42 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: radial-gradient(ellipse at 30% 20%, rgba(112,32,208,0.15) 0%, transparent 55%),
-                        radial-gradient(ellipse at 70% 80%, rgba(48,10,102,0.18) 0%, transparent 60%);
-            animation: nebulaFlow 15s ease infinite alternate;
+            background-image:
+                radial-gradient(1px 1px at 30px 50px, var(--space-glow), transparent),
+                radial-gradient(1.3px 1.3px at 80px 120px, #fff, transparent),
+                radial-gradient(0.8px 0.8px at 150px 70px, var(--space-light-purple), transparent),
+                radial-gradient(1.6px 1.6px at 220px 160px, var(--space-glow), transparent),
+                radial-gradient(0.9px 0.9px at 300px 240px, #fff, transparent);
+            background-size: 250px 250px;
+            animation: starTwinkle 10s ease-in-out infinite alternate;
+            z-index: -2;
+            opacity: 0.6;
+        }
+        /* 第三层：大面积紫星云缓慢漂移 */
+        .nebula-layer {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background:
+                radial-gradient(ellipse at 20% 30%, rgba(104,28,200,0.12) 0%, transparent 52%),
+                radial-gradient(ellipse at 80% 75%, rgba(40,8,88,0.15) 0%, transparent 58%);
+            animation: nebulaSlowMove 22s ease-in-out infinite alternate;
             z-index: -1;
         }
-        @keyframes starTwinkle {
-            0% { opacity: 0.4; transform: translateY(0px); }
-            100% { opacity: 0.8; transform: translateY(-10px); }
+        @keyframes starFlow {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-66.6%, -66.6%); }
         }
-        @keyframes nebulaFlow {
+        @keyframes starTwinkle {
+            0% { opacity: 0.35; }
+            100% { opacity: 0.75; }
+        }
+        @keyframes nebulaSlowMove {
             0% { transform: translate(0,0) scale(1); }
-            50% { transform: translate(-20px,10px) scale(1.05); }
-            100% { transform: translate(10px,-15px) scale(0.98); }
+            50% { transform: translate(-30px, 15px) scale(1.04); }
+            100% { transform: translate(20px, -20px) scale(0.96); }
         }
         @keyframes cardFloat {
             0% { transform: translateY(0px); }
@@ -104,11 +127,9 @@
             font-size: 24px;
             font-weight: bold;
             letter-spacing: 2px;
-            text-shadow: 0 0 10px var(--space-glow);
             transition: var(--transition-base);
         }
         .logo:hover {
-            text-shadow: 0 0 20px var(--space-glow);
             transform: scale(1.03);
         }
         .nav-menu {
@@ -131,13 +152,11 @@
         .nav-menu li a:hover {
             background: rgba(200,150,255,0.18);
             border-color: rgba(200,150,255,0.3);
-            box-shadow: 0 0 12px rgba(200,150,255,0.25);
             transform: translateY(-2px);
         }
         .nav-menu li a.active {
             background: var(--space-light-purple);
             color: var(--space-black);
-            box-shadow: 0 0 16px var(--space-light-purple);
             transform: scale(1.05);
         }
         main {
@@ -160,7 +179,6 @@
             font-size: 36px;
             margin-bottom: 40px;
             color: var(--space-light-purple);
-            text-shadow: 0 0 12px var(--space-glow);
             animation: fadeInUp 0.6s ease;
         }
         /* 首页 */
@@ -172,10 +190,7 @@
         .home-content h2 {
             font-size: 48px;
             margin-bottom: 20px;
-            background: linear-gradient(90deg, #fff, var(--space-light-purple));
-            -webkit-background-clip: text;
-            color: transparent;
-            text-shadow: 0 0 20px rgba(200,150,255,0.4);
+            color: #ffffff;
         }
         .home-content p {
             font-size: 18px;
@@ -204,7 +219,6 @@
         .tag:nth-child(3n) { animation-delay: -4s; }
         .tag:hover {
             background: var(--card-strong-bg);
-            box-shadow: 0 0 14px rgba(200,150,255,0.3);
             transform: translateY(-4px) scale(1.03);
         }
         /* 作品板块 */
@@ -223,7 +237,6 @@
         }
         .work-card:nth-child(even) { animation-delay: -3s; }
         .work-card:hover {
-            box-shadow: 0 0 24px rgba(200,150,255,0.35);
             transform: translateY(-8px) scale(1.02);
             border-color: var(--space-light-purple);
         }
@@ -252,11 +265,7 @@
             padding: 24px;
             border-radius: 16px;
             border: 1px solid rgba(200,150,255,0.2);
-            box-shadow: 0 0 16px rgba(112,32,208,0.15);
             transition: var(--transition-base);
-        }
-        .video-input-box:hover {
-            box-shadow: 0 0 24px rgba(112,32,208,0.25);
         }
         .video-input-box input {
             width: 100%;
@@ -272,7 +281,6 @@
         .video-input-box input:focus {
             outline: none;
             border-color: var(--space-light-purple);
-            box-shadow: 0 0 0 4px rgba(200,150,255,0.12);
         }
         .btn {
             padding: 10px 26px;
@@ -283,11 +291,9 @@
             cursor: pointer;
             font-size: 16px;
             transition: var(--transition-base);
-            box-shadow: 0 2px 10px rgba(112,32,208,0.3);
         }
         .btn:hover {
             background: linear-gradient(135deg, var(--space-light-purple), var(--space-main-purple));
-            box-shadow: 0 0 20px var(--space-light-purple);
             transform: translateY(-3px);
         }
         .btn:active {
@@ -306,7 +312,6 @@
             transition: var(--transition-base);
         }
         .video-item:hover {
-            box-shadow: 0 0 18px rgba(200,150,255,0.25);
             transform: scale(1.02);
         }
         .video-item iframe {
@@ -332,20 +337,15 @@
             background: var(--card-strong-bg);
             padding: 28px;
             border-radius: 20px;
-            box-shadow: 0 0 20px rgba(112,32,208,0.2);
             border: 1px solid rgba(200,150,255,0.22);
             transition: var(--transition-base);
             animation: cardFloat 8s ease-in-out infinite;
-        }
-        .msg-form:hover {
-            box-shadow: 0 0 30px rgba(112,32,208,0.3);
         }
         .msg-form h3 {
             text-align: center;
             margin-bottom: 24px;
             color: var(--space-light-purple);
             font-size: 22px;
-            text-shadow: 0 0 8px rgba(200,150,255,0.3);
         }
         .msg-form input, .msg-form textarea {
             width: 100%;
@@ -361,7 +361,6 @@
         .msg-form input:focus, .msg-form textarea:focus {
             outline: none;
             border-color: var(--space-light-purple);
-            box-shadow: 0 0 0 4px rgba(200,150,255,0.12), 0 0 14px rgba(200,150,255,0.2);
         }
         .msg-form textarea {
             min-height: 140px;
@@ -381,14 +380,12 @@
             background: var(--card-strong-bg);
             border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 0 20px rgba(112,32,208,0.2);
             border: 1px solid rgba(200,150,255,0.22);
             transition: var(--transition-base);
             animation: cardFloat 7s ease-in-out infinite;
             animation-delay: -3s;
         }
         .msg-work-card:hover {
-            box-shadow: 0 0 30px rgba(112,32,208,0.3);
             transform: translateY(-6px);
         }
         .msg-work-card img {
@@ -418,7 +415,6 @@
             margin-bottom: 24px;
             color: var(--space-light-purple);
             font-size: 22px;
-            text-shadow: 0 0 8px rgba(200,150,255,0.3);
         }
         #msgList {
             display: flex;
@@ -437,7 +433,6 @@
         }
         .msg-item:hover {
             transform: translateY(-4px);
-            box-shadow: 0 6px 24px rgba(112,32,208,0.22);
             border-left-color: var(--space-glow);
         }
         .msg-name {
@@ -445,7 +440,6 @@
             font-weight: bold;
             font-size: 19px;
             margin-bottom: 6px;
-            text-shadow: 0 0 6px rgba(200,150,255,0.2);
         }
         .msg-time {
             font-size: 13px;
@@ -470,11 +464,9 @@
             cursor: pointer;
             font-size: 13px;
             transition: var(--transition-base);
-            box-shadow: 0 2px 8px rgba(180,40,80,0.3);
         }
         .del-msg-btn:hover {
             background: linear-gradient(135deg, #b82850, #dd3060);
-            box-shadow: 0 0 14px rgba(220,48,96,0.4);
             transform: scale(1.08);
         }
         .empty-tip {
@@ -523,6 +515,8 @@
     </style>
 </head>
 <body>
+    <!-- 银河星云底层动画层 -->
+    <div class="nebula-layer"></div>
     <header>
         <div class="nav-box">
             <div class="logo">雨婷 Sweet宇宙主页</div>
@@ -537,7 +531,7 @@
 
     <main>
         <section id="home" class="active">
-            <h2 class="title">欢迎来到我的紫色宇宙</h2>
+            <h2 class="title">首页</h2>
             <div class="home-content">
                 <h2>雨婷 · Sweet</h2>
                 <p>壁纸、文案、摄影、日常分享全部收录于此，这片紫色星云存放所有温柔与浪漫。任何人都可以浏览、分享视频、留下留言，记录每一份心动瞬间。</p>
@@ -556,42 +550,42 @@
             <h2 class="title">我的宇宙作品合集</h2>
             <div class="works-grid">
                 <div class="work-card">
-                    <img alt="壁纸作品">
+                    <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="壁纸作品">
                     <div class="work-text">
                         <h3>紫色梦幻星云壁纸</h3>
                         <p>原创深空氛围感锁屏壁纸</p>
                     </div>
                 </div>
                 <div class="work-card">
-                    <img alt="摄影作品">
+                    <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="摄影作品">
                     <div class="work-text">
                         <h3>楼道庆生摄影</h3>
                         <p>纪实氛围感实拍</p>
                     </div>
                 </div>
                 <div class="work-card">
-                    <img alt="图文文案">
+                    <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="图文文案">
                     <div class="work-text">
                         <h3>温柔宇宙文案合集</h3>
                         <p>短句、治愈系星空文案</p>
                     </div>
                 </div>
                 <div class="work-card">
-                    <img alt="兔子外套插画">
+                    <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="兔子外套插画">
                     <div class="work-text">
                         <h3>兔子星空插画</h3>
                         <p>手绘治愈星云插画</p>
                     </div>
                 </div>
                 <div class="work-card">
-                    <img alt="海德薇emo猫">
+                    <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="海德薇emo猫">
                     <div class="work-text">
                         <h3>海德薇和星云小猫</h3>
                         <p>可爱动物系列绘图</p>
                     </div>
                 </div>
                 <div class="work-card">
-                    <img alt="24新音海报">
+                    <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="24新音海报">
                     <div class="work-text">
                         <h3>24新音星云海报设计</h3>
                         <p>活动视觉设计作品</p>
@@ -612,7 +606,7 @@
 
         <!-- 优化留言页面 带身份权限控制 -->
         <section id="message">
-            <h2 class="title">星云留言板 · 欢迎所有人留下想说的话</h2>
+            <h2 class="title">星云留言板</h2>
             <div class="msg-wrap">
                 <!-- 左侧：发布留言表单 -->
                 <div class="msg-left">
@@ -627,7 +621,7 @@
                 <!-- 右侧：作品展示 + 云端留言列表 -->
                 <div class="msg-right">
                     <div class="msg-work-card">
-                        <img alt="紫色梦幻星云壁纸">
+                        <img src="https://img0.baidu.com/it/u=3286239421,3133992211&fm=253&fmt=auto&app=138&f=JPEG?w=800&h=450" alt="紫色梦幻星云壁纸">
                         <div class="msg-work-text">
                             <h3>紫色梦幻星云壁纸</h3>
                             <p>原创深空氛围感锁屏作品</p>
