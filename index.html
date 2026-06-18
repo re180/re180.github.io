@@ -3,18 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>橹穆 | 个人紫色主页</title>
+    <title>雨婷 | 紫色宇宙主页</title>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <style>
         :root {
-            --purple-dark: #4B0082;
-            --purple-main: #8A2BE2;
-            --purple-light: #b886fd;
-            --purple-bg: #1c0a2e;
-            --purple-card: rgba(138, 43, 226, 0.15);
-            --purple-card-strong: rgba(138, 43, 226, 0.25);
+            /* 深空宇宙紫配色体系 */
+            --space-black: #080414;
+            --space-dark-purple: #300a66;
+            --space-main-purple: #7020d0;
+            --space-light-purple: #c896ff;
+            --space-glow: #e0c4ff;
+            --card-bg: rgba(100, 30, 190, 0.12);
+            --card-strong-bg: rgba(110, 40, 200, 0.22);
             --text-white: #f8f5ff;
-            --text-gray: #c9b6e4;
+            --text-gray: #d4c0f0;
+            --transition-base: all 0.35s cubic-bezier(0.2, 0, 0.2, 1);
         }
         * {
             margin: 0;
@@ -23,18 +26,71 @@
             font-family: "Microsoft Yahei", sans-serif;
         }
         body {
-            background: var(--purple-bg);
+            /* 动态宇宙星空背景 */
+            background: var(--space-black);
             color: var(--text-white);
-            background-image: radial-gradient(#62169c 1px, transparent 1px);
-            background-size: 30px 30px;
+            position: relative;
+            overflow-x: hidden;
+        }
+        /* 星空闪烁动画层 */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image:
+                radial-gradient(1px 1px at 20px 30px, var(--space-glow), transparent),
+                radial-gradient(1px 1px at 40px 70px, var(--space-light-purple), transparent),
+                radial-gradient(1.2px 1.2px at 90px 40px, #fff, transparent),
+                radial-gradient(0.8px 0.8px at 130px 90px, var(--space-glow), transparent),
+                radial-gradient(1.5px 1.5px at 170px 120px, var(--space-light-purple), transparent);
+            background-size: 200px 200px;
+            animation: starTwinkle 8s ease-in-out infinite alternate;
+            z-index: -2;
+            opacity: 0.6;
+        }
+        /* 星云渐变流动层 */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(ellipse at 30% 20%, rgba(112,32,208,0.15) 0%, transparent 55%),
+                        radial-gradient(ellipse at 70% 80%, rgba(48,10,102,0.18) 0%, transparent 60%);
+            animation: nebulaFlow 15s ease infinite alternate;
+            z-index: -1;
+        }
+        @keyframes starTwinkle {
+            0% { opacity: 0.4; transform: translateY(0px); }
+            100% { opacity: 0.8; transform: translateY(-10px); }
+        }
+        @keyframes nebulaFlow {
+            0% { transform: translate(0,0) scale(1); }
+            50% { transform: translate(-20px,10px) scale(1.05); }
+            100% { transform: translate(10px,-15px) scale(0.98); }
+        }
+        @keyframes cardFloat {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-6px); }
+            100% { transform: translateY(0px); }
+        }
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
         header {
             position: fixed;
             top: 0;
             width: 100%;
-            background: linear-gradient(90deg, var(--purple-dark), var(--purple-main));
-            box-shadow: 0 2px 12px #62169c80;
+            background: linear-gradient(90deg, var(--space-dark-purple), var(--space-main-purple));
+            box-shadow: 0 2px 18px rgba(112,32,208,0.35);
             z-index: 9999;
+            backdrop-filter: blur(8px);
+            border-bottom: 1px solid rgba(200,150,255,0.15);
         }
         .nav-box {
             max-width: 1200px;
@@ -48,6 +104,12 @@
             font-size: 24px;
             font-weight: bold;
             letter-spacing: 2px;
+            text-shadow: 0 0 10px var(--space-glow);
+            transition: var(--transition-base);
+        }
+        .logo:hover {
+            text-shadow: 0 0 20px var(--space-glow);
+            transform: scale(1.03);
         }
         .nav-menu {
             display: flex;
@@ -58,16 +120,25 @@
             color: var(--text-white);
             text-decoration: none;
             font-size: 17px;
-            padding: 8px 12px;
-            border-radius: 6px;
-            transition: 0.3s ease;
+            padding: 8px 14px;
+            border-radius: 8px;
+            transition: var(--transition-base);
             pointer-events: auto !important;
             position: relative;
             z-index: 99999;
+            border: 1px solid transparent;
         }
-        .nav-menu li a:hover, .nav-menu li a.active {
-            background: var(--purple-light);
-            color: var(--purple-dark);
+        .nav-menu li a:hover {
+            background: rgba(200,150,255,0.18);
+            border-color: rgba(200,150,255,0.3);
+            box-shadow: 0 0 12px rgba(200,150,255,0.25);
+            transform: translateY(-2px);
+        }
+        .nav-menu li a.active {
+            background: var(--space-light-purple);
+            color: var(--space-black);
+            box-shadow: 0 0 16px var(--space-light-purple);
+            transform: scale(1.05);
         }
         main {
             max-width: 1200px;
@@ -79,6 +150,7 @@
             min-height: calc(100vh - 90px);
             padding: 40px 20px;
             display: none;
+            animation: fadeInUp 0.5s ease forwards;
         }
         section.active {
             display: block;
@@ -87,20 +159,23 @@
             text-align: center;
             font-size: 36px;
             margin-bottom: 40px;
-            color: var(--purple-light);
-            text-shadow: 0 0 8px #b886fd70;
+            color: var(--space-light-purple);
+            text-shadow: 0 0 12px var(--space-glow);
+            animation: fadeInUp 0.6s ease;
         }
         /* 首页 */
         .home-content {
             text-align: center;
             margin-top: 100px;
+            animation: fadeInUp 0.7s ease;
         }
         .home-content h2 {
             font-size: 48px;
             margin-bottom: 20px;
-            background: linear-gradient(90deg, #fff, var(--purple-light));
+            background: linear-gradient(90deg, #fff, var(--space-light-purple));
             -webkit-background-clip: text;
             color: transparent;
+            text-shadow: 0 0 20px rgba(200,150,255,0.4);
         }
         .home-content p {
             font-size: 18px;
@@ -108,6 +183,7 @@
             max-width: 700px;
             margin: 0 auto;
             opacity: 0.9;
+            color: var(--text-gray);
         }
         .tag-list {
             margin-top: 40px;
@@ -118,9 +194,18 @@
         }
         .tag {
             padding: 8px 18px;
-            background: var(--purple-card);
-            border: 1px solid var(--purple-light);
+            background: var(--card-bg);
+            border: 1px solid rgba(200,150,255,0.25);
             border-radius: 30px;
+            transition: var(--transition-base);
+            animation: cardFloat 6s ease-in-out infinite;
+        }
+        .tag:nth-child(2n) { animation-delay: -2s; }
+        .tag:nth-child(3n) { animation-delay: -4s; }
+        .tag:hover {
+            background: var(--card-strong-bg);
+            box-shadow: 0 0 14px rgba(200,150,255,0.3);
+            transform: translateY(-4px) scale(1.03);
         }
         /* 作品板块 */
         .works-grid {
@@ -129,60 +214,84 @@
             gap: 24px;
         }
         .work-card {
-            background: var(--purple-card);
-            border: 1px solid #8a2be240;
-            border-radius: 12px;
+            background: var(--card-bg);
+            border: 1px solid rgba(200,150,255,0.18);
+            border-radius: 14px;
             overflow: hidden;
-            transition: 0.3s;
+            transition: var(--transition-base);
+            animation: cardFloat 7s ease-in-out infinite;
         }
+        .work-card:nth-child(even) { animation-delay: -3s; }
         .work-card:hover {
-            box-shadow: 0 0 20px var(--purple-light);
-            transform: translateY(-6px);
+            box-shadow: 0 0 24px rgba(200,150,255,0.35);
+            transform: translateY(-8px) scale(1.02);
+            border-color: var(--space-light-purple);
         }
         .work-card img {
             width: 100%;
             height: 200px;
             object-fit: cover;
-            background: #30104f;
+            background: #0c0620;
+            transition: var(--transition-base);
+        }
+        .work-card:hover img {
+            transform: scale(1.08);
         }
         .work-text {
             padding: 16px;
         }
         .work-text h3 {
             margin-bottom: 8px;
-            color: var(--purple-light);
+            color: var(--space-light-purple);
         }
         /* 视频板块 */
         .video-input-box {
             max-width: 800px;
             margin: 0 auto 40px;
-            background: var(--purple-card);
+            background: var(--card-strong-bg);
             padding: 24px;
-            border-radius: 12px;
+            border-radius: 16px;
+            border: 1px solid rgba(200,150,255,0.2);
+            box-shadow: 0 0 16px rgba(112,32,208,0.15);
+            transition: var(--transition-base);
+        }
+        .video-input-box:hover {
+            box-shadow: 0 0 24px rgba(112,32,208,0.25);
         }
         .video-input-box input {
             width: 100%;
             padding: 12px 16px;
-            border-radius: 8px;
-            border: 1px solid var(--purple-light);
-            background: #270f3d;
+            border-radius: 10px;
+            border: 1px solid rgba(200,150,255,0.25);
+            background: #0c0620;
             color: #fff;
             font-size: 16px;
             margin-bottom: 16px;
+            transition: var(--transition-base);
+        }
+        .video-input-box input:focus {
+            outline: none;
+            border-color: var(--space-light-purple);
+            box-shadow: 0 0 0 4px rgba(200,150,255,0.12);
         }
         .btn {
             padding: 10px 26px;
-            background: var(--purple-main);
+            background: linear-gradient(135deg, var(--space-main-purple), var(--space-dark-purple));
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 16px;
-            transition: 0.3s;
+            transition: var(--transition-base);
+            box-shadow: 0 2px 10px rgba(112,32,208,0.3);
         }
         .btn:hover {
-            background: var(--purple-light);
-            color: var(--purple-dark);
+            background: linear-gradient(135deg, var(--space-light-purple), var(--space-main-purple));
+            box-shadow: 0 0 20px var(--space-light-purple);
+            transform: translateY(-3px);
+        }
+        .btn:active {
+            transform: translateY(1px);
         }
         .video-list {
             display: grid;
@@ -190,9 +299,15 @@
             gap: 24px;
         }
         .video-item {
-            background: #270f3d;
-            border-radius: 10px;
+            background: #0c0620;
+            border-radius: 14px;
             overflow: hidden;
+            border: 1px solid rgba(200,150,255,0.15);
+            transition: var(--transition-base);
+        }
+        .video-item:hover {
+            box-shadow: 0 0 18px rgba(200,150,255,0.25);
+            transform: scale(1.02);
         }
         .video-item iframe {
             width: 100%;
@@ -214,33 +329,39 @@
             top: 100px;
         }
         .msg-form {
-            background: var(--purple-card-strong);
+            background: var(--card-strong-bg);
             padding: 28px;
-            border-radius: 16px;
-            box-shadow: 0 0 16px rgba(138,43,226,0.18);
-            border: 1px solid rgba(184,134,253,0.2);
+            border-radius: 20px;
+            box-shadow: 0 0 20px rgba(112,32,208,0.2);
+            border: 1px solid rgba(200,150,255,0.22);
+            transition: var(--transition-base);
+            animation: cardFloat 8s ease-in-out infinite;
+        }
+        .msg-form:hover {
+            box-shadow: 0 0 30px rgba(112,32,208,0.3);
         }
         .msg-form h3 {
             text-align: center;
             margin-bottom: 24px;
-            color: var(--purple-light);
+            color: var(--space-light-purple);
             font-size: 22px;
+            text-shadow: 0 0 8px rgba(200,150,255,0.3);
         }
         .msg-form input, .msg-form textarea {
             width: 100%;
             padding: 14px;
             margin-bottom: 18px;
-            background: #270f3d;
-            border: 1px solid rgba(184,134,253,0.3);
-            border-radius: 10px;
+            background: #0c0620;
+            border: 1px solid rgba(200,150,255,0.25);
+            border-radius: 12px;
             color: #fff;
             font-size: 16px;
-            transition: 0.2s;
+            transition: var(--transition-base);
         }
         .msg-form input:focus, .msg-form textarea:focus {
             outline: none;
-            border-color: var(--purple-light);
-            box-shadow: 0 0 0 3px rgba(184,134,253,0.15);
+            border-color: var(--space-light-purple);
+            box-shadow: 0 0 0 4px rgba(200,150,255,0.12), 0 0 14px rgba(200,150,255,0.2);
         }
         .msg-form textarea {
             min-height: 140px;
@@ -257,24 +378,35 @@
             gap: 24px;
         }
         .msg-work-card {
-            background: var(--purple-card-strong);
-            border-radius: 16px;
+            background: var(--card-strong-bg);
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 0 16px rgba(138,43,226,0.18);
-            border: 1px solid rgba(184,134,253,0.2);
+            box-shadow: 0 0 20px rgba(112,32,208,0.2);
+            border: 1px solid rgba(200,150,255,0.22);
+            transition: var(--transition-base);
+            animation: cardFloat 7s ease-in-out infinite;
+            animation-delay: -3s;
+        }
+        .msg-work-card:hover {
+            box-shadow: 0 0 30px rgba(112,32,208,0.3);
+            transform: translateY(-6px);
         }
         .msg-work-card img {
             width: 100%;
             height: 240px;
             object-fit: cover;
-            background: #30104f;
+            background: #0c0620;
+            transition: var(--transition-base);
+        }
+        .msg-work-card:hover img {
+            transform: scale(1.06);
         }
         .msg-work-text {
             padding: 20px;
             text-align: center;
         }
         .msg-work-text h3 {
-            color: var(--purple-light);
+            color: var(--space-light-purple);
             margin-bottom: 8px;
             font-size: 20px;
         }
@@ -284,8 +416,9 @@
         .msg-list-wrap h3 {
             text-align: center;
             margin-bottom: 24px;
-            color: var(--purple-light);
+            color: var(--space-light-purple);
             font-size: 22px;
+            text-shadow: 0 0 8px rgba(200,150,255,0.3);
         }
         #msgList {
             display: flex;
@@ -293,23 +426,26 @@
             gap: 20px;
         }
         .msg-item {
-            background: var(--purple-card);
+            background: var(--card-bg);
             padding: 24px;
-            border-radius: 14px;
-            border-left: 5px solid var(--purple-light);
+            border-radius: 18px;
+            border-left: 5px solid var(--space-light-purple);
             position: relative;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.15);
-            transition: 0.2s;
+            box-shadow: 0 2px 14px rgba(0,0,0,0.25);
+            transition: var(--transition-base);
+            animation: fadeInUp 0.5s ease forwards;
         }
         .msg-item:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 18px rgba(138,43,226,0.12);
+            transform: translateY(-4px);
+            box-shadow: 0 6px 24px rgba(112,32,208,0.22);
+            border-left-color: var(--space-glow);
         }
         .msg-name {
-            color: var(--purple-light);
+            color: var(--space-light-purple);
             font-weight: bold;
             font-size: 19px;
             margin-bottom: 6px;
+            text-shadow: 0 0 6px rgba(200,150,255,0.2);
         }
         .msg-time {
             font-size: 13px;
@@ -326,17 +462,20 @@
             position: absolute;
             right: 20px;
             top: 20px;
-            background: #992244;
+            background: linear-gradient(135deg, #912040, #b82850);
             color: #fff;
             border: none;
             padding: 5px 12px;
-            border-radius: 8px;
+            border-radius: 10px;
             cursor: pointer;
             font-size: 13px;
-            transition: 0.2s;
+            transition: var(--transition-base);
+            box-shadow: 0 2px 8px rgba(180,40,80,0.3);
         }
         .del-msg-btn:hover {
-            background: #cc3355;
+            background: linear-gradient(135deg, #b82850, #dd3060);
+            box-shadow: 0 0 14px rgba(220,48,96,0.4);
+            transform: scale(1.08);
         }
         .empty-tip {
             text-align: center;
@@ -349,6 +488,9 @@
             padding: 20px;
             opacity: 0.6;
             font-size: 14px;
+            color: var(--text-gray);
+            border-top: 1px solid rgba(200,150,255,0.1);
+            margin-top: 40px;
         }
         @media (max-width:992px) {
             .msg-wrap {
@@ -371,13 +513,19 @@
             .video-list {
                 grid-template-columns: 1fr;
             }
+            .title {
+                font-size: 28px;
+            }
+            .home-content h2 {
+                font-size: 36px;
+            }
         }
     </style>
 </head>
 <body>
     <header>
         <div class="nav-box">
-            <div class="logo">橹穆 Sweet主页</div>
+            <div class="logo">雨婷 Sweet宇宙主页</div>
             <ul class="nav-menu">
                 <li><a href="#home" class="nav-link active" data-target="home">首页</a></li>
                 <li><a href="#works" class="nav-link" data-target="works">作品</a></li>
@@ -389,10 +537,10 @@
 
     <main>
         <section id="home" class="active">
-            <h2 class="title">欢迎来到我的紫色小世界</h2>
+            <h2 class="title">欢迎来到我的紫色宇宙</h2>
             <div class="home-content">
-                <h2>橹穆 · Sweet</h2>
-                <p>壁纸、文案、摄影、日常分享全部收录于此，这里存放所有温柔与浪漫。任何人都可以浏览、分享视频、留下留言，记录每一份心动瞬间。</p>
+                <h2>雨婷 · Sweet</h2>
+                <p>壁纸、文案、摄影、日常分享全部收录于此，这片紫色星云存放所有温柔与浪漫。任何人都可以浏览、分享视频、留下留言，记录每一份心动瞬间。</p>
                 <div class="tag-list">
                     <span class="tag">壁纸公之于众</span>
                     <span class="tag">新音缘起</span>
@@ -405,13 +553,13 @@
         </section>
 
         <section id="works">
-            <h2 class="title">我的作品合集</h2>
+            <h2 class="title">我的宇宙作品合集</h2>
             <div class="works-grid">
                 <div class="work-card">
                     <img alt="壁纸作品">
                     <div class="work-text">
-                        <h3>紫色梦幻壁纸</h3>
-                        <p>原创氛围感锁屏壁纸</p>
+                        <h3>紫色梦幻星云壁纸</h3>
+                        <p>原创深空氛围感锁屏壁纸</p>
                     </div>
                 </div>
                 <div class="work-card">
@@ -424,28 +572,28 @@
                 <div class="work-card">
                     <img alt="图文文案">
                     <div class="work-text">
-                        <h3>温柔文案合集</h3>
-                        <p>短句、治愈系文案</p>
+                        <h3>温柔宇宙文案合集</h3>
+                        <p>短句、治愈系星空文案</p>
                     </div>
                 </div>
                 <div class="work-card">
                     <img alt="兔子外套插画">
                     <div class="work-text">
-                        <h3>兔子外套插画</h3>
-                        <p>手绘治愈插画</p>
+                        <h3>兔子星空插画</h3>
+                        <p>手绘治愈星云插画</p>
                     </div>
                 </div>
                 <div class="work-card">
                     <img alt="海德薇emo猫">
                     <div class="work-text">
-                        <h3>海德薇和emo猫</h3>
+                        <h3>海德薇和星云小猫</h3>
                         <p>可爱动物系列绘图</p>
                     </div>
                 </div>
                 <div class="work-card">
                     <img alt="24新音海报">
                     <div class="work-text">
-                        <h3>24新音海报设计</h3>
+                        <h3>24新音星云海报设计</h3>
                         <p>活动视觉设计作品</p>
                     </div>
                 </div>
@@ -464,31 +612,31 @@
 
         <!-- 优化留言页面 带身份权限控制 -->
         <section id="message">
-            <h2 class="title">留言板 · 欢迎所有人留下想说的话</h2>
+            <h2 class="title">星云留言板 · 欢迎所有人留下想说的话</h2>
             <div class="msg-wrap">
                 <!-- 左侧：发布留言表单 -->
                 <div class="msg-left">
                     <form class="msg-form" id="msgForm">
-                        <h3>写下你的留言</h3>
+                        <h3>写下你的星际留言</h3>
                         <input type="text" id="userName" placeholder="你的昵称（管理员填admin）" required>
-                        <textarea id="userMsg" placeholder="写下想说的话..." required></textarea>
-                        <button class="btn" type="submit">提交留言</button>
+                        <textarea id="userMsg" placeholder="写下想留在这片紫星云的话..." required></textarea>
+                        <button class="btn" type="submit">提交星际留言</button>
                     </form>
                 </div>
 
                 <!-- 右侧：作品展示 + 云端留言列表 -->
                 <div class="msg-right">
                     <div class="msg-work-card">
-                        <img alt="紫色梦幻壁纸">
+                        <img alt="紫色梦幻星云壁纸">
                         <div class="msg-work-text">
-                            <h3>紫色梦幻壁纸</h3>
-                            <p>原创氛围感锁屏作品</p>
+                            <h3>紫色梦幻星云壁纸</h3>
+                            <p>原创深空氛围感锁屏作品</p>
                         </div>
                     </div>
                     <div class="msg-list-wrap">
-                        <h3>大家的留言</h3>
+                        <h3>大家的星际留言</h3>
                         <div id="msgList">
-                            <div class="empty-tip">暂无留言，快来第一条吧～</div>
+                            <div class="empty-tip">星云暂无留言，快来留下第一条星光寄语吧～</div>
                         </div>
                     </div>
                 </div>
@@ -497,7 +645,7 @@
     </main>
 
     <footer>
-        © 2026 橹穆 sweet | 紫色个人主页 · 仅留言作者/管理员可删除留言
+        © 2026 雨婷 sweet | 紫色宇宙个人主页 · 仅留言作者/管理员可删除留言
     </footer>
 
     <script>
@@ -572,7 +720,7 @@
                     return;
                 }
                 if(!data?.length) {
-                    msgList.innerHTML = `<div class="empty-tip">暂无留言，快来第一条吧～</div>`;
+                    msgList.innerHTML = `<div class="empty-tip">星云暂无留言，快来留下第一条星光寄语吧～</div>`;
                     return;
                 }
                 data.forEach(item => {
@@ -624,7 +772,7 @@
                 if(error) return alert("提交失败："+error.message);
                 loadMsg();
                 e.target.reset();
-                alert('留言提交成功，全站访客可见！');
+                alert('留言提交成功，存入紫色星云，全站访客可见！');
             })
 
             // 昵称输入框变更，实时刷新留言（切换身份立刻更新删除按钮）
