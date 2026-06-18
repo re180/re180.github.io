@@ -689,7 +689,7 @@
         }
 
         /* ============================================================
-           安利分享 — 分类 Tab + 上传 + 展示
+           安利分享 — 分类 Tab + 上传 + 展示 (Supabase 云端版)
            ============================================================ */
 
         /* —— 分类 Tab 导航 —— */
@@ -1439,7 +1439,7 @@
             </div>
         </section>
 
-        <!-- ===== 安利分享（改造后） ===== -->
+        <!-- ===== 安利分享 — Supabase 云端版（全站可见，仅上传者/管理员可删） ===== -->
         <section id="video">
             <h2 class="title">安利分享</h2>
 
@@ -1456,7 +1456,7 @@
                 </button>
             </div>
 
-            <!-- 上传区域 -->
+            <!-- 上传区域（新增昵称输入框） -->
             <div class="share-upload-box" id="shareUploadBox">
                 <div class="upload-title">
                     <span id="uploadIcon">🖼️</span>
@@ -1464,11 +1464,12 @@
                 </div>
                 <div class="share-upload-row" id="uploadFields">
                     <input type="text" id="inputTitle" placeholder="标题（选填）" />
+                    <input type="text" id="inputAuthor" placeholder="你的昵称（必填，用于删除验证）" />
                     <input type="text" id="inputContent" placeholder="图片链接（必填）" />
                     <textarea id="inputDesc" placeholder="描述（选填）" rows="2"></textarea>
                     <button class="btn-upload" id="uploadBtn">✦ 上传分享</button>
                 </div>
-                <p style="margin-top:12px;opacity:0.6;font-size:18px;text-align:center;" id="uploadHint">粘贴图片链接，点击上传</p>
+                <p style="margin-top:12px;opacity:0.6;font-size:18px;text-align:center;" id="uploadHint">粘贴图片链接，点击上传 · 全站访客可见</p>
             </div>
 
             <!-- 展示区域 -->
@@ -1611,66 +1612,12 @@
         })();
 
         // ================================================================
-        //  4. 安利分享 — 分类 Tab + 上传 + 展示 (新)
+        //  4. 安利分享 — Supabase 云端版（全站可见，仅上传者/管理员可删）
         // ================================================================
-        (function() {
-            const STORAGE_KEY = 'luMuShare';
-
-            // ----- 工具 -----
-            function loadData() {
-                try {
-                    const raw = localStorage.getItem(STORAGE_KEY);
-                    if (raw) {
-                        const data = JSON.parse(raw);
-                        if (Array.isArray(data)) return data;
-                    }
-                } catch (e) {}
-                return [];
-            }
-
-            function saveData(data) {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-            }
-
-            // 迁移旧视频数据
-            function migrateOldData() {
-                const oldKey = 'luMuVideo';
-                const oldData = localStorage.getItem(oldKey);
-                if (oldData) {
-                    try {
-                        const list = JSON.parse(oldData);
-                        if (Array.isArray(list) && list.length) {
-                            const current = loadData();
-                            let migrated = 0;
-                            list.forEach(url => {
-                                if (url && typeof url === 'string' && url.trim()) {
-                                    // 检查是否已存在
-                                    const exists = current.some(item =>
-                                        item.type === 'video' && item.content === url.trim()
-                                    );
-                                    if (!exists) {
-                                        current.push({
-                                            id: Date.now() + Math.random() * 1000 + migrated,
-                                            type: 'video',
-                                            title: '安利视频',
-                                            content: url.trim(),
-                                            desc: '来自旧版视频分享',
-                                            time: new Date().toLocaleString()
-                                        });
-                                        migrated++;
-                                    }
-                                }
-                            });
-                            if (migrated) {
-                                saveData(current);
-                            }
-                            // 删除旧key
-                            localStorage.removeItem(oldKey);
-                        }
-                    } catch (e) {}
-                }
-            }
-            migrateOldData();
+        (async function() {
+            const SUPABASE_URL = "https://ltiilggogjtcljeyovvt.supabase.co";
+            const SUPABASE_ANON_KEY = "sb_publishable_HHbWLOTam-gem4gg-zQ0uQ_6PKmDS0s";
+            const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
             // ----- DOM 引用 -----
             const tabs = document.querySelectorAll('.cat-tab');
@@ -1681,6 +1628,7 @@
             const uploadLabel = document.getElementById('uploadLabel');
             const uploadHint = document.getElementById('uploadHint');
             const inputTitle = document.getElementById('inputTitle');
+            const inputAuthor = document.getElementById('inputAuthor');
             const inputContent = document.getElementById('inputContent');
             const inputDesc = document.getElementById('inputDesc');
             const uploadBtn = document.getElementById('uploadBtn');
@@ -1688,14 +1636,13 @@
 
             let currentCategory = 'image'; // 'image' | 'text' | 'video'
 
-            // 分类配置
             const CAT_CONFIG = {
                 image: {
                     icon: '🖼️',
                     label: '上传图片',
                     contentPlaceholder: '图片链接（必填）',
                     descPlaceholder: '描述（选填）',
-                    hint: '粘贴图片链接，点击上传',
+                    hint: '粘贴图片链接，点击上传 · 全站访客可见',
                     emptyMsg: '✨ 暂无图片分享，快来上传第一张吧～'
                 },
                 text: {
@@ -1703,7 +1650,7 @@
                     label: '上传文字',
                     contentPlaceholder: '文字内容（必填）',
                     descPlaceholder: '描述（选填）',
-                    hint: '写下你想分享的文字内容',
+                    hint: '写下你想分享的文字，全站访客可见',
                     emptyMsg: '✨ 暂无文字分享，快来写下第一条吧～'
                 },
                 video: {
@@ -1711,25 +1658,95 @@
                     label: '上传视频',
                     contentPlaceholder: '视频链接（必填）',
                     descPlaceholder: '描述（选填）',
-                    hint: '粘贴视频链接，点击上传',
+                    hint: '粘贴视频链接，点击上传 · 全站访客可见',
                     emptyMsg: '✨ 暂无视频分享，快来上传第一条吧～'
                 }
             };
 
-            // ----- 渲染 -----
-            function render() {
-                const data = loadData();
-                const filtered = data.filter(item => item.type === currentCategory);
+            // ----- 数据操作 -----
+            async function loadData() {
+                const { data, error } = await supabase
+                    .from('shares')
+                    .select('*')
+                    .order('created_at', { ascending: false });
+                if (error) {
+                    console.error('加载失败', error);
+                    return [];
+                }
+                return data || [];
+            }
 
-                // 更新badge
-                const countImage = data.filter(item => item.type === 'image').length;
-                const countText = data.filter(item => item.type === 'text').length;
-                const countVideo = data.filter(item => item.type === 'video').length;
+            async function addItem(item) {
+                if (!item.author_name) {
+                    alert('请填写你的昵称');
+                    return false;
+                }
+                const { error } = await supabase
+                    .from('shares')
+                    .insert([{
+                        id: Date.now() + Math.floor(Math.random() * 1000),   // ← 这里修改了
+                        type: item.type,
+                        title: item.title || '无标题',
+                        content: item.content,
+                        description: item.desc || '',
+                        time: item.time || new Date().toLocaleString(),
+                        author_name: item.author_name,
+                        created_at: new Date().toISOString()
+                    }]);
+                if (error) {
+                    alert('上传失败：' + error.message);
+                    return false;
+                }
+                return true;
+            }
+
+            // 删除：先验证身份（通过 RPC 设置 session 变量）
+            async function deleteItemWithAuth(id) {
+                const name = prompt('请输入你上传时使用的昵称（或输入 admin 作为管理员）:');
+                if (name === null) return false;
+                if (name.trim() === '') {
+                    alert('昵称不能为空');
+                    return false;
+                }
+
+                // 1. 设置 session 变量
+                const { error: rpcError } = await supabase.rpc('set_app_author_name', { name: name.trim() });
+                if (rpcError) {
+                    alert('权限验证失败：' + rpcError.message);
+                    return false;
+                }
+
+                // 2. 执行删除（RLS 会检查 current_setting('app.author_name')）
+                const { error } = await supabase
+                    .from('shares')
+                    .delete()
+                    .eq('id', id);
+
+                if (error) {
+                    if (error.message.includes('permission denied')) {
+                        alert('删除失败：昵称不匹配或非管理员');
+                    } else {
+                        alert('删除失败：' + error.message);
+                    }
+                    return false;
+                }
+                return true;
+            }
+
+            // ----- 渲染 -----
+            async function render() {
+                const allData = await loadData();
+                const filtered = allData.filter(item => item.type === currentCategory);
+
+                // 更新 badge
+                const countImage = allData.filter(item => item.type === 'image').length;
+                const countText = allData.filter(item => item.type === 'text').length;
+                const countVideo = allData.filter(item => item.type === 'video').length;
                 badgeImage.textContent = countImage;
                 badgeText.textContent = countText;
                 badgeVideo.textContent = countVideo;
 
-                // 更新上传区UI
+                // 更新上传区 UI
                 const cfg = CAT_CONFIG[currentCategory];
                 uploadIcon.textContent = cfg.icon;
                 uploadLabel.textContent = cfg.label;
@@ -1737,12 +1754,11 @@
                 inputDesc.placeholder = cfg.descPlaceholder;
                 uploadHint.textContent = cfg.hint;
 
-                // 清空输入
+                // 清空输入（保留昵称方便连续上传）
                 inputTitle.value = '';
                 inputContent.value = '';
                 inputDesc.value = '';
 
-                // 展示
                 if (!filtered.length) {
                     display.innerHTML = `<div class="share-empty">${cfg.emptyMsg}</div>`;
                     return;
@@ -1751,7 +1767,7 @@
                 let html = '';
                 filtered.forEach(item => {
                     const typeLabel = { image: '🖼️ 图片', text: '📝 文字', video: '🎬 视频' } [item.type] || item
-                    .type;
+                        .type;
                     let mediaHtml = '';
                     if (item.type === 'image') {
                         mediaHtml =
@@ -1770,8 +1786,8 @@
                             ${mediaHtml}
                             <div class="card-body">
                                 <div class="card-title">${item.title || '无标题'}</div>
-                                <div class="card-desc">${item.desc || item.content || ''}</div>
-                                <div class="card-time">${item.time || ''}</div>
+                                <div class="card-desc">${item.description || item.content || ''}</div>
+                                <div class="card-time">${item.time || ''}  · 上传者：${item.author_name || '匿名'}</div>
                             </div>
                         </div>
                     `;
@@ -1780,14 +1796,15 @@
 
                 // 删除事件
                 display.querySelectorAll('.card-del').forEach(btn => {
-                    btn.addEventListener('click', function(e) {
+                    btn.addEventListener('click', async function(e) {
                         e.stopPropagation();
                         const id = this.dataset.id;
                         if (!confirm('确定要删除这条分享吗？')) return;
-                        let data = loadData();
-                        data = data.filter(item => String(item.id) !== String(id));
-                        saveData(data);
-                        render();
+                        const ok = await deleteItemWithAuth(Number(id));
+                        if (ok) {
+                            alert('✅ 删除成功');
+                            render();
+                        }
                     });
                 });
             }
@@ -1802,19 +1819,25 @@
             }
 
             // ----- 上传 -----
-            function handleUpload() {
+            async function handleUpload() {
                 const title = inputTitle.value.trim() || '无标题';
+                const author = inputAuthor.value.trim();
                 const content = inputContent.value.trim();
                 const desc = inputDesc.value.trim() || '';
 
+                if (!author) {
+                    alert('请填写你的昵称（用于后续删除验证）');
+                    inputAuthor.focus();
+                    return;
+                }
                 if (!content) {
-                    alert('请填写内容（图片链接 / 文字内容 / 视频链接）');
+                    alert('请填写内容（图片/文字/视频链接）');
                     return;
                 }
 
-                const data = loadData();
-                // 检查是否已存在相同内容（同类型）
-                const exists = data.some(item =>
+                // 检查重复
+                const all = await loadData();
+                const exists = all.some(item =>
                     item.type === currentCategory && item.content === content
                 );
                 if (exists) {
@@ -1822,32 +1845,34 @@
                     return;
                 }
 
-                data.push({
-                    id: Date.now() + Math.random() * 1000,
+                const ok = await addItem({
                     type: currentCategory,
                     title: title,
                     content: content,
                     desc: desc,
-                    time: new Date().toLocaleString()
+                    time: new Date().toLocaleString(),
+                    author_name: author
                 });
-                saveData(data);
-                render();
-                alert('✅ 分享成功！已存入「' + CAT_CONFIG[currentCategory].label + '」分类');
+
+                if (ok) {
+                    inputTitle.value = '';
+                    inputContent.value = '';
+                    inputDesc.value = '';
+                    render();
+                    alert('✅ 分享成功！全站访客均可看到，删除时需验证昵称。');
+                }
             }
 
             // ----- 事件绑定 -----
             tabs.forEach(tab => {
                 tab.addEventListener('click', function() {
                     const cat = this.dataset.cat;
-                    if (cat !== currentCategory) {
-                        switchCategory(cat);
-                    }
+                    if (cat !== currentCategory) switchCategory(cat);
                 });
             });
 
             uploadBtn.addEventListener('click', handleUpload);
 
-            // 回车快捷上传
             inputContent.addEventListener('keydown', (e) => {
                 if (e.key === 'Enter' && !e.shiftKey) {
                     e.preventDefault();
@@ -1855,13 +1880,13 @@
                 }
             });
 
-            // 初始化默认选中图片
+            // 初始渲染
             switchCategory('image');
         })();
 
 
         // ================================================================
-        //  5. Supabase 留言 (保持不变)
+        //  5. Supabase 留言（保持不变）
         // ================================================================
         window.addEventListener('load', async () => {
             const SUPABASE_URL = "https://ltiilggogjtcljeyovvt.supabase.co";
