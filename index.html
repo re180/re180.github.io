@@ -53,7 +53,6 @@
         body {
             font-family: var(--font-display);
             color: var(--text-white);
-            /* ★★★ 替换为图片背景 ★★★ */
             background-image: url('https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/yz.png');
             background-size: cover;
             background-position: center center;
@@ -71,23 +70,10 @@
             cursor: none;
         }
 
-        /* ===== ★ 视频背景 — 隐藏，改用图片 ===== */
         .bg-video {
             display: none;
-            /* 完全隐藏视频背景 */
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            object-fit: cover;
-            z-index: -10;
-            pointer-events: none;
-            background: var(--space-black);
-            opacity: 0;
         }
 
-        /* ===== 星空粒子Canvas ===== */
         #starCanvas {
             position: fixed;
             top: 0;
@@ -99,7 +85,6 @@
             display: block;
         }
 
-        /* ===== 自定义炫酷光标 ===== */
         #customCursor {
             position: fixed;
             pointer-events: none;
@@ -160,7 +145,6 @@
             }
         }
 
-        /* ===== 背景浮动极光光晕层 ===== */
         .aurora-layer {
             position: fixed;
             top: 0;
@@ -228,7 +212,6 @@
             }
         }
 
-        /* ===== IE 警告遮罩 ===== */
         #ie-warning {
             display: none;
             position: fixed;
@@ -308,9 +291,6 @@
             box-shadow: 0 8px 40px rgba(208, 168, 255, 0.2);
         }
 
-        /* ============================================================
-           星星粒子背景（增强动态）
-           ============================================================ */
         body::before {
             content: "";
             position: fixed;
@@ -367,9 +347,7 @@
             }
         }
 
-        /* ============================================================
-           ★★★ 引导弹窗 — 带鼠标指示器 ★★★
-           ============================================================ */
+        /* ===== 引导弹窗 ===== */
         .pop-mask {
             position: fixed;
             inset: 0;
@@ -382,7 +360,6 @@
             backdrop-filter: blur(16px) saturate(1.3);
             -webkit-backdrop-filter: blur(16px) saturate(1.3);
             cursor: none;
-            /* 隐藏默认鼠标 */;
         }
 
         .pop-box {
@@ -474,7 +451,6 @@
             }
         }
 
-        /* 弹窗装饰星尘粒子 */
         .pop-sparkle {
             position: absolute;
             pointer-events: none;
@@ -538,7 +514,6 @@
             }
         }
 
-        /* ===== ★★★ 弹窗鼠标指示器 — 缩小版 ★★★ ===== */
         .pop-cursor {
             position: fixed;
             pointer-events: none;
@@ -556,7 +531,6 @@
             -webkit-backdrop-filter: blur(2px);
         }
 
-        /* 中心亮点 */
         .pop-cursor::before {
             content: '';
             position: absolute;
@@ -571,7 +545,6 @@
             transition: width 0.3s ease, height 0.3s ease, box-shadow 0.3s ease;
         }
 
-        /* 外圈旋转光晕 — 缩小适配 */
         .pop-cursor::after {
             content: '';
             position: absolute;
@@ -608,7 +581,6 @@
             }
         }
 
-        /* 鼠标悬停在按钮上时指示器变化 — 适度放大 */
         .pop-cursor.hover-btn {
             width: 56px;
             height: 56px;
@@ -622,7 +594,6 @@
             box-shadow: 0 0 35px rgba(208, 168, 255, 0.7), 0 0 60px rgba(160, 90, 255, 0.3);
         }
 
-        /* ===== ★★★ 弹窗文字 — 左对齐 ★★★ ===== */
         .pop-text {
             position: relative;
             z-index: 2;
@@ -632,7 +603,6 @@
             font-weight: 600;
             letter-spacing: 1.5px;
             text-align: left;
-            /* ← 新增：左对齐 */
             color: transparent;
             background: linear-gradient(135deg,
                     #f0e0ff 0%,
@@ -647,7 +617,6 @@
             text-shadow: 0 0 80px rgba(160, 90, 255, 0.15), 0 0 160px rgba(104, 28, 200, 0.06);
             user-select: none;
             padding-left: 4px;
-            /* 微调左对齐视觉舒适度 */;
         }
         .pop-text {
             color: var(--space-light-purple);
@@ -690,7 +659,6 @@
             color: transparent;
             animation: starSpin 6s linear infinite;
             margin: 0 8px 0 0;
-            /* 调整右边距，让星标和文字更贴合 */;
         }
         .pop-text .star-icon {
             color: var(--space-light-purple);
@@ -708,7 +676,6 @@
             }
         }
 
-        /* 按钮组 — 保持居中 */
         .pop-btn-group {
             position: relative;
             z-index: 2;
@@ -835,7 +802,6 @@
             box-shadow: 0 0 80px rgba(104, 28, 200, 0.30), 0 0 160px rgba(40, 8, 88, 0.15);
         }
 
-        /* ===== 弹窗底部提示 — 左对齐 ===== */
         .pop-hint {
             position: absolute;
             bottom: 6px;
@@ -851,7 +817,6 @@
             user-select: none;
             animation: hintPulse 3s ease-in-out infinite;
             text-align: left;
-            /* ← 也改为左对齐，与文字保持一致 */;
         }
         @keyframes hintPulse {
             0%,
@@ -863,9 +828,7 @@
             }
         }
 
-        /* ============================================================
-           1. 顶部导航 — 视觉优化
-           ============================================================ */
+        /* ===== 顶部导航 ===== */
         header {
             position: fixed;
             top: 0;
@@ -1204,9 +1167,7 @@
             }
         }
 
-        /* ============================================================
-           2. 主体 — 视觉优化
-           ============================================================ */
+        /* ===== 主体 ===== */
         main {
             max-width: 78vw;
             margin: 0 auto;
@@ -1260,9 +1221,7 @@
             background: transparent;
         }
 
-        /* ============================================================
-           3. 标题 — 视觉优化
-           ============================================================ */
+        /* ===== 标题 ===== */
         .title {
             text-align: center;
             font-size: 52px;
@@ -1502,9 +1461,7 @@
             box-shadow: 0 0 30px rgba(208, 168, 255, 0.15);
         }
 
-        /* ============================================================
-           4. 首页布局 — 视觉优化
-           ============================================================ */
+        /* ===== 首页布局 ===== */
         .home-row {
             display: grid;
             grid-template-columns: 1fr 1fr;
@@ -1784,9 +1741,7 @@
             right: 18px;
         }
 
-        /* ============================================================
-           5. 作品卡片 — 视觉优化
-           ============================================================ */
+        /* ===== 作品卡片 ===== */
         .works-grid {
             display: flex;
             flex-direction: column;
@@ -1960,9 +1915,7 @@
             font-weight: 400;
         }
 
-        /* ============================================================
-           6. 安利分享 — 视觉优化
-           ============================================================ */
+        /* ===== 安利分享 ===== */
         .category-nav {
             display: flex;
             justify-content: center;
@@ -2350,9 +2303,7 @@
             font-weight: 400;
         }
 
-        /* ============================================================
-           7. Lightbox
-           ============================================================ */
+        /* ===== Lightbox ===== */
         .lightbox {
             position: fixed;
             inset: 0;
@@ -2406,7 +2357,7 @@
         }
 
         /* ============================================================
-           8. 留言 — 视觉优化
+           ★★★ 留言板 — 完全重写，让框不再突出 ★★★
            ============================================================ */
         .msg-wrap {
             display: grid;
@@ -2569,129 +2520,89 @@
             gap: 30px;
         }
 
-        /* ===== ★ 留言框左上角星星装饰 ★ ===== */
+        /* ===== ★★★ 留言框 — 完全重写，低调融合 ★★★ ===== */
         .msg-work-card {
             position: relative;
-            background: var(--card-strong-bg);
-            border-radius: 24px;
+            background: rgba(90, 25, 170, 0.04);
+            /* 极淡紫色背景，几乎透明 */
+            border-radius: 20px;
             overflow: hidden;
-            border: 2px solid rgba(208, 168, 255, 0.20);
-            transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.5s ease;
-            animation: cardFloat 8s ease-in-out infinite;
-            padding: 44px 34px;
+            border: 1px solid rgba(208, 168, 255, 0.06);
+            /* 极细极淡边框 */
+            padding: 32px 28px;
             text-align: center;
-            backdrop-filter: blur(6px);
-            box-shadow: 0 0 40px rgba(104, 28, 200, 0.10);
-            --border-angle: 0deg;
-            border-image: conic-gradient(from var(--border-angle), #d0a8ff, #681cc8, #a87aff, #d0a8ff, #681cc8, #a87aff) 1;
-            animation: borderSpin 7s linear infinite, cardFloat 8s ease-in-out infinite;
+            backdrop-filter: blur(4px);
+            box-shadow: 0 2px 16px rgba(104, 28, 200, 0.02);
+            /* 几乎不可见的阴影 */
+            transition: border-color 0.4s ease, box-shadow 0.4s ease;
+            /* 移除所有动画，不再浮动 */
         }
 
-        /* 左上角星星装饰 — 使用 ::before */
+        /* 左上角星星 — 缩小、变淡、静默 */
         .msg-work-card::before {
             content: '✦';
             position: absolute;
-            top: -6px;
-            left: -2px;
-            font-size: 42px;
+            top: 6px;
+            left: 10px;
+            font-size: 18px;
+            /* 大幅缩小 */
             z-index: 5;
-            background: linear-gradient(135deg, var(--space-glow), var(--space-light-purple), var(--space-main-purple));
-            -webkit-background-clip: text;
-            background-clip: text;
-            color: transparent;
-            animation: starSpin 6s linear infinite;
-            filter: drop-shadow(0 0 30px rgba(208, 168, 255, 0.4));
-            opacity: 0.85;
-            transform-origin: center;
+            color: rgba(208, 168, 255, 0.20);
+            /* 极淡 */
+            animation: none;
+            /* 移除旋转动画 */
+            filter: none;
+            opacity: 0.4;
             pointer-events: none;
             line-height: 1;
         }
-        @supports not (background-clip: text) {
-            .msg-work-card::before {
-                color: var(--space-light-purple);
-                background: none;
-                -webkit-background-clip: unset;
-                background-clip: unset;
-            }
-        }
 
-        /* 右下角原有的装饰保留 */
+        /* 右下角装饰 — 更小更淡 */
         .msg-work-card::after {
             content: '✦ ✦ ✦';
             position: absolute;
-            bottom: 14px;
-            right: 22px;
-            font-size: 22px;
-            color: rgba(208, 168, 255, 0.18);
-            letter-spacing: 8px;
-            animation: twinkleStar 3s ease-in-out infinite alternate;
+            bottom: 8px;
+            right: 14px;
+            font-size: 12px;
+            /* 缩小 */
+            color: rgba(208, 168, 255, 0.08);
+            /* 极淡 */
+            animation: none;
+            /* 移除闪烁动画 */
+            letter-spacing: 4px;
             z-index: 1;
+            pointer-events: none;
         }
-        @keyframes twinkleStar {
-            0% {
-                opacity: 0.2;
-                transform: scale(0.9) rotate(0deg);
-            }
-            100% {
-                opacity: 0.7;
-                transform: scale(1.2) rotate(12deg);
-            }
+
+        /* hover 时仅轻微变化，不抢眼 */
+        .msg-work-card:hover {
+            border-color: rgba(208, 168, 255, 0.12);
+            box-shadow: 0 4px 24px rgba(104, 28, 200, 0.04);
+            transform: none;
+            /* 不上浮、不缩放 */;
         }
 
         .msg-work-card .msg-work-text {
             position: relative;
             z-index: 2;
         }
+
         .msg-work-card h3 {
-            white-space: nowrap;
-            overflow-x: auto;
-            overflow-y: hidden;
-            padding-bottom: 4px;
-            font-size: 30px;
-            font-weight: 600;
-            line-height: 1.8;
-            color: transparent;
-            background: linear-gradient(90deg, #f0e0ff, #d0a8ff, #a87aff, #f0e0ff);
-            background-size: 300% 100%;
-            -webkit-background-clip: text;
-            background-clip: text;
-            animation: rainbowText 7s linear infinite;
-            text-shadow: 0 0 40px rgba(160, 90, 255, 0.15);
-            letter-spacing: 1px;
-            padding: 10px 0;
+            font-size: 26px;
+            font-weight: 500;
+            /* 降低字重，更柔和 */
+            line-height: 1.7;
+            color: rgba(208, 168, 255, 0.60);
+            /* 降低饱和度 */
+            letter-spacing: 0.5px;
+            padding: 6px 0;
             font-family: var(--font-display);
-        }
-        .msg-work-card h3 {
-            color: var(--space-light-purple);
+            /* 移除渐变文字，使用纯色更低调 */
             background: none;
             -webkit-background-clip: unset;
             background-clip: unset;
-        }
-        @supports (background-clip: text) or (-webkit-background-clip: text) {
-            .msg-work-card h3 {
-                color: transparent;
-                background: linear-gradient(90deg, #f0e0ff, #d0a8ff, #a87aff, #f0e0ff);
-                background-size: 300% 100%;
-                -webkit-background-clip: text;
-                background-clip: text;
-                animation: rainbowText 7s linear infinite;
-                text-shadow: 0 0 40px rgba(160, 90, 255, 0.15);
-            }
-        }
-
-        @keyframes rainbowText {
-            0% {
-                background-position: 0% 50%;
-            }
-            100% {
-                background-position: 300% 50%;
-            }
-        }
-
-        .msg-work-card:hover {
-            transform: translateY(-10px) scale(1.02);
-            box-shadow: 0 0 80px rgba(160, 90, 255, 0.20), inset 0 0 60px rgba(208, 168, 255, 0.03);
-            border-color: var(--space-light-purple);
+            text-shadow: none;
+            animation: none;
         }
 
         .msg-list-wrap h3 {
@@ -2708,7 +2619,8 @@
             flex-direction: column;
             gap: 24px;
         }
-        /* ===== 修复留言文字溢出 ===== */
+
+        /* 留言项 — 保持原有风格，微调 */
         .msg-item {
             background: var(--card-bg);
             padding: 34px;
@@ -2719,8 +2631,8 @@
             transition: var(--transition-base);
             animation: fadeInUp 0.6s ease forwards;
             backdrop-filter: blur(4px);
-            overflow: hidden;          /* 新增：防止溢出 */
-            word-break: break-word;    /* 新增：优先单词边界断行 */
+            overflow: hidden;
+            word-break: break-word;
         }
         .msg-item:hover {
             transform: translateY(-5px);
@@ -2749,11 +2661,11 @@
             line-height: 1.9;
             font-size: 24px;
             color: #f0e6ff;
-            word-break: break-word;    /* 改为 break-word 更友好 */
+            word-break: break-word;
             white-space: pre-wrap;
-            overflow-wrap: break-word; /* 标准属性 */
-            word-wrap: break-word;     /* 兼容旧浏览器 */
-            max-width: 100%;           /* 限制最大宽度 */
+            overflow-wrap: break-word;
+            word-wrap: break-word;
+            max-width: 100%;
             font-weight: 400;
         }
         .del-msg-btn {
@@ -2799,9 +2711,7 @@
             letter-spacing: 1px;
         }
 
-        /* ============================================================
-           9. 响应式 — 保持原有 + 优化
-           ============================================================ */
+        /* ===== 响应式 ===== */
         @media (max-width: 992px) {
             main,
             .nav-box {
@@ -2925,7 +2835,20 @@
                 padding: 14px 16px 16px;
             }
             .msg-work-card h3 {
-                font-size: 26px;
+                font-size: 22px;
+            }
+            .msg-work-card {
+                padding: 24px 20px;
+            }
+            .msg-work-card::before {
+                font-size: 14px !important;
+                top: 4px !important;
+                left: 6px !important;
+            }
+            .msg-work-card::after {
+                font-size: 10px !important;
+                bottom: 6px !important;
+                right: 10px !important;
             }
 
             .logo {
@@ -2959,7 +2882,6 @@
                 font-size: 22px;
                 min-width: 160px;
             }
-            /* 响应式缩小鼠标指示器 */
             .pop-cursor {
                 width: 36px !important;
                 height: 36px !important;
@@ -2978,12 +2900,6 @@
             }
             .pop-hint {
                 font-size: 14px;
-            }
-            /* 响应式调整左上角星星大小 */
-            .msg-work-card::before {
-                font-size: 32px !important;
-                top: -4px !important;
-                left: 0px !important;
             }
         }
         @media (max-width: 768px) {
@@ -3123,10 +3039,20 @@
                 padding: 16px;
             }
             .msg-work-card h3 {
-                font-size: 22px;
+                font-size: 19px;
             }
             .msg-work-card {
-                padding: 32px 22px;
+                padding: 20px 16px;
+            }
+            .msg-work-card::before {
+                font-size: 12px !important;
+                top: 3px !important;
+                left: 5px !important;
+            }
+            .msg-work-card::after {
+                font-size: 8px !important;
+                bottom: 4px !important;
+                right: 8px !important;
             }
             header {
                 backdrop-filter: blur(18px) saturate(1.2);
@@ -3153,7 +3079,6 @@
             .pop-btn-group {
                 gap: 16px;
             }
-            /* 响应式缩小鼠标指示器 */
             .pop-cursor {
                 width: 30px !important;
                 height: 30px !important;
@@ -3174,12 +3099,6 @@
             .pop-hint {
                 font-size: 12px;
                 margin-top: 24px;
-            }
-            /* 响应式调整左上角星星大小 */
-            .msg-work-card::before {
-                font-size: 28px !important;
-                top: -2px !important;
-                left: 2px !important;
             }
         }
         @media (max-width: 480px) {
@@ -3217,7 +3136,21 @@
                 top: 6px;
             }
             .msg-work-card h3 {
-                font-size: 20px;
+                font-size: 17px;
+            }
+            .msg-work-card {
+                padding: 16px 12px;
+                border-radius: 16px;
+            }
+            .msg-work-card::before {
+                font-size: 10px !important;
+                top: 2px !important;
+                left: 4px !important;
+            }
+            .msg-work-card::after {
+                font-size: 7px !important;
+                bottom: 3px !important;
+                right: 6px !important;
             }
             .nav-menu li a {
                 font-size: 13px;
@@ -3258,7 +3191,6 @@
             .pop-btn-group {
                 gap: 12px;
             }
-            /* 响应式缩小鼠标指示器 */
             .pop-cursor {
                 width: 24px !important;
                 height: 24px !important;
@@ -3281,26 +3213,20 @@
                 font-size: 10px;
                 margin-top: 18px;
             }
-            /* 响应式调整左上角星星大小 */
-            .msg-work-card::before {
-                font-size: 24px !important;
-                top: -1px !important;
-                left: 4px !important;
-            }
         }
     </style>
 </head>
 <body>
 
-    <!-- ===== ★ 视频背景 — 已替换为图片，此元素已隐藏 ===== -->
+    <!-- ===== 视频背景（已隐藏） ===== -->
     <video class="bg-video" autoplay muted loop playsinline>
         <source src="https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/sp.mp4" type="video/mp4">
     </video>
 
-    <!-- ===== 星空粒子Canvas ===== -->
+    <!-- ===== 星空粒子 ===== -->
     <canvas id="starCanvas"></canvas>
 
-    <!-- ===== 浮动极光光晕层 ===== -->
+    <!-- ===== 极光光晕 ===== -->
     <div class="aurora-layer">
         <div class="aurora-blob"></div>
         <div class="aurora-blob"></div>
@@ -3310,7 +3236,7 @@
     <!-- ===== 自定义光标 ===== -->
     <div id="customCursor"></div>
 
-    <!-- ===== IE 警告遮罩 ===== -->
+    <!-- ===== IE 警告 ===== -->
     <div id="ie-warning">
         <div class="ie-box">
             <h2>🌌 浏览器版本提示</h2>
@@ -3325,20 +3251,16 @@
         </div>
     </div>
 
-    <!-- ===== 引导弹窗 — 带鼠标指示器 ===== -->
+    <!-- ===== 引导弹窗 ===== -->
     <div class="pop-mask" id="entryPop">
-        <!-- 鼠标指示器（跟随鼠标） -->
         <div class="pop-cursor" id="popCursor"></div>
-
         <div class="pop-box">
-            <!-- 装饰星尘粒子 -->
             <span class="pop-sparkle"></span>
             <span class="pop-sparkle"></span>
             <span class="pop-sparkle"></span>
             <span class="pop-sparkle"></span>
             <span class="pop-sparkle"></span>
             <span class="pop-sparkle"></span>
-
             <div class="pop-text">
                 <span class="star-icon">✦</span>
                 亲爱的雨婷，你永远是最棒最棒最棒的，屏幕前的你愿意和我一起来看看这个雨婷吗
@@ -3459,7 +3381,7 @@
                                 <span class="work-tag">宫斗</span>
                                 <span class="work-tag">轻喜剧</span>
                             </div>
-                            <p>岳雨婷饰演女主角沈卿，人前温顺乖巧、楚楚可怜，擅长撒娇示弱，表面毫无攻击性，很容易让帝王放下防备；懂得利用软萌外表化解危机，受委屈后会扑到皇帝面前示弱，“茶艺感”十足但内心坦荡。</p>
+                            <p>岳雨婷饰演女主角沈卿，人前温顺乖巧、楚楚可怜，擅长撒娇示弱，表面毫无攻击性，很容易让帝王放下防备；懂得利用软萌外表化解危机，受委屈后会扑到皇帝面前示弱，"茶艺感"十足但内心坦荡。</p>
                         </div>
                     </div>
                     <div class="work-card">
@@ -3468,7 +3390,7 @@
                         </div>
                         <div class="work-text">
                             <a href="https://novelquickapp.com/s/7nHYYVLHIPA/" target="_blank" style="text-decoration:none;">
-                            <h3>天亮了，你就回来了</h3>
+                                <h3>天亮了，你就回来了</h3>
                             </a>
                             <div class="sub-desc">都市时空虐恋短剧</div>
                             <div class="work-tag-group">
@@ -3486,7 +3408,7 @@
                         </div>
                         <div class="work-text">
                             <a href="https://novelquickapp.com/s/tK06XCZ9-vU/" target="_blank" style="text-decoration:none;">
-                            <h3>龙榻换人，我和假皇帝共享江山</h3>
+                                <h3>龙榻换人，我和假皇帝共享江山</h3>
                             </a>
                             <div class="sub-desc">古装权谋</div>
                             <div class="work-tag-group">
@@ -3499,11 +3421,11 @@
                     </div>
                     <div class="work-card">
                         <div class="img-box">
-                             <img src="https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zp/zp6.png" alt="桃烬九重天">
+                            <img src="https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/zp/zp6.png" alt="桃烬九重天">
                         </div>
                         <div class="work-text">
                             <a href="https://novelquickapp.com/s/8fqsrFKNb6M/" target="_blank" style="text-decoration:none;">
-                            <h3>桃烬九重天</h3>
+                                <h3>桃烬九重天</h3>
                             </a>
                             <div class="sub-desc">仙侠逆命剧</div>
                             <div class="work-tag-group">
@@ -3519,7 +3441,7 @@
                         </div>
                         <div class="work-text">
                             <a href="https://novelquickapp.com/s/lo27OuIGqwc/" target="_blank" style="text-decoration:none;">
-                            <h3>这个家我罩了</h3>
+                                <h3>这个家我罩了</h3>
                             </a>
                             <div class="sub-desc">都市重生家庭爽剧</div>
                             <div class="work-tag-group">
@@ -3537,14 +3459,14 @@
                         </div>
                         <div class="work-text">
                             <a href="https://novelquickapp.com/s/XMskgn5dQCc/" target="_blank" style="text-decoration:none;">
-                            <h3>蔷薇花谢即归来</h3>
+                                <h3>蔷薇花谢即归来</h3>
                             </a>
                             <div class="sub-desc">古风宅斗剧</div>
                             <div class="work-tag-group">
                                 <span class="work-tag">庶女逆袭</span>
                                 <span class="work-tag">破镜重圆</span>
                             </div>
-                            <p>岳雨婷饰演女主角沈蔷薇,家道中落、继母要将她抵债卖给恶霸，为护住年幼妹妹走投无路投奔亲戚，被姨母拒之门外后，主动设计接近世家嫡子只为换取生存落脚之地。她分得清利弊，所有主动靠近皆是绝境里的自保手段，绝不甘愿沦为他人附庸，心中死守 “绝不做妾” 的底线。</p>
+                            <p>岳雨婷饰演女主角沈蔷薇,家道中落、继母要将她抵债卖给恶霸，为护住年幼妹妹走投无路投奔亲戚，被姨母拒之门外后，主动设计接近世家嫡子只为换取生存落脚之地。她分得清利弊，所有主动靠近皆是绝境里的自保手段，绝不甘愿沦为他人附庸，心中死守 "绝不做妾" 的底线。</p>
                         </div>
                     </div>
                 </div>
@@ -3597,7 +3519,7 @@
                     </form>
                 </div>
                 <div class="msg-right">
-                    <!-- ★ 留言框 — 左上角星星装饰已通过 CSS ::before 实现 ★ -->
+                    <!-- ===== ★ 留言框 — 已重写，不再突出 ★ ===== -->
                     <div class="msg-work-card">
                         <div class="msg-work-text">
                             <h3>亲爱的月光石们，欢迎在这里留下想对雨婷说的心里话，或是你与雨婷相遇的温暖小故事。</h3>
@@ -3623,7 +3545,7 @@
     </div>
 
     <!-- ============================================================
-    JavaScript — 所有功能 + 炫酷增强
+    JavaScript
     ============================================================ -->
     <script>
         // ============================================================
@@ -3649,7 +3571,7 @@
         })();
 
         // ============================================================
-        // 1. 星空粒子系统
+        // 1. 星空粒子
         // ============================================================
         (function() {
             var canvas = document.getElementById('starCanvas');
@@ -3827,7 +3749,6 @@
 
             if (!popMask || !popCursor) return;
 
-            // 鼠标移动更新指示器位置
             document.addEventListener('mousemove', function(e) {
                 if (!isVisible) return;
                 var x = e.clientX;
@@ -3835,7 +3756,6 @@
                 popCursor.style.left = x + 'px';
                 popCursor.style.top = y + 'px';
 
-                // 检测是否悬停在按钮上
                 var isHover = false;
                 for (var i = 0; i < btns.length; i++) {
                     var rect = btns[i].getBoundingClientRect();
@@ -3851,7 +3771,6 @@
                 }
             });
 
-            // 触摸设备支持
             document.addEventListener('touchmove', function(e) {
                 var touch = e.touches[0];
                 if (!touch) return;
@@ -3875,7 +3794,6 @@
                 }
             }, { passive: true });
 
-            // 弹窗关闭时隐藏指示器
             var btn1 = document.getElementById('btn1');
             var btn2 = document.getElementById('btn2');
 
@@ -3887,7 +3805,6 @@
             btn1.addEventListener('click', hideCursor);
             btn2.addEventListener('click', hideCursor);
 
-            // 如果用户点击弹窗外部（遮罩）关闭弹窗
             popMask.addEventListener('click', function(e) {
                 if (e.target === popMask) {
                     hideCursor();
@@ -3897,7 +3814,7 @@
         })();
 
         // ============================================================
-        // 3. 弹窗 — 按钮星尘粒子（保留）
+        // 3. 弹窗按钮星尘
         // ============================================================
         var popMask = document.getElementById('entryPop');
 
@@ -3934,7 +3851,6 @@
         btn1.addEventListener('mouseenter', function(e) { addBtnSparkle(e, this); });
         btn2.addEventListener('mouseenter', function(e) { addBtnSparkle(e, this); });
 
-        // 保留原有点击事件，同时关闭弹窗
         btn1.addEventListener('click', function() {
             popMask.style.display = 'none';
             document.body.style.transition = 'box-shadow 0.5s ease';
@@ -3986,7 +3902,7 @@
         });
 
         // ============================================================
-        // 6. 炫酷光标 + 拖尾（保留）
+        // 6. 炫酷光标
         // ============================================================
         (function() {
             var cursor = document.getElementById('customCursor');
@@ -4136,7 +4052,7 @@
         })();
 
         // ============================================================
-        // 8. 3D 卡片倾斜效果
+        // 8. 3D 卡片倾斜
         // ============================================================
         (function() {
             var cards = document.querySelectorAll('.work-card, .info-card, .share-card');
@@ -4169,7 +4085,7 @@
         })();
 
         // ============================================================
-        // 9. 导航链接星尘粒子
+        // 9. 导航链接星尘
         // ============================================================
         (function() {
             var navLinks = document.querySelectorAll('.nav-menu li a');
