@@ -2708,6 +2708,7 @@
             flex-direction: column;
             gap: 24px;
         }
+        /* ===== 修复留言文字溢出 ===== */
         .msg-item {
             background: var(--card-bg);
             padding: 34px;
@@ -2718,8 +2719,8 @@
             transition: var(--transition-base);
             animation: fadeInUp 0.6s ease forwards;
             backdrop-filter: blur(4px);
-            overflow: hidden;          /* 新增 */
-            word-break: break-word;    /* 新增（替代 break-all） */
+            overflow: hidden;          /* 新增：防止溢出 */
+            word-break: break-word;    /* 新增：优先单词边界断行 */
         }
         .msg-item:hover {
             transform: translateY(-5px);
@@ -2748,11 +2749,11 @@
             line-height: 1.9;
             font-size: 24px;
             color: #f0e6ff;
-            word-break: break-word;    /* 改为 break-word */
+            word-break: break-word;    /* 改为 break-word 更友好 */
             white-space: pre-wrap;
-            overflow-wrap: break-word; /* 已有则保留 */
-            word-wrap: break-word;     /* 添加兼容 */
-            max-width: 100%;           /* 新增 */
+            overflow-wrap: break-word; /* 标准属性 */
+            word-wrap: break-word;     /* 兼容旧浏览器 */
+            max-width: 100%;           /* 限制最大宽度 */
             font-weight: 400;
         }
         .del-msg-btn {
