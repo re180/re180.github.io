@@ -53,7 +53,13 @@
         body {
             font-family: var(--font-display);
             color: var(--text-white);
-            background: var(--space-black);
+            /* ★★★ 替换为图片背景 ★★★ */
+            background-image: url('https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/yz.png');
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            background-color: var(--space-black);
             position: relative;
             overflow-x: hidden;
             min-height: 100vh;
@@ -65,8 +71,10 @@
             cursor: none;
         }
 
-        /* ===== ★ 视频背景 ===== */
+        /* ===== ★ 视频背景 — 隐藏，改用图片 ===== */
         .bg-video {
+            display: none;
+            /* 完全隐藏视频背景 */
             position: fixed;
             top: 0;
             left: 0;
@@ -76,7 +84,7 @@
             z-index: -10;
             pointer-events: none;
             background: var(--space-black);
-            opacity: 0.95;
+            opacity: 0;
         }
 
         /* ===== 星空粒子Canvas ===== */
@@ -3279,16 +3287,9 @@
 </head>
 <body>
 
-    <!-- ===== ★ 视频背景（兼容多格式 + 备用图） ===== -->
-    <video class="bg-video" id="bgVideo" autoplay muted loop playsinline
-           poster="https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/poster.jpg">
-        <!-- 1. WebM（VP9）→ 所有现代浏览器首选 -->
-        <source src="https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/sp.webm" type="video/webm">
-        <!-- 2. MP4（H.264）→ 最通用 -->
+    <!-- ===== ★ 视频背景 — 已替换为图片，此元素已隐藏 ===== -->
+    <video class="bg-video" autoplay muted loop playsinline>
         <source src="https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/sp.mp4" type="video/mp4">
-        <!-- 3. OGG（Theora）→ 终极备选 -->
-        <source src="https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/sp.ogv" type="video/ogg">
-        您的浏览器不支持视频播放，请升级到最新版本。
     </video>
 
     <!-- ===== 星空粒子Canvas ===== -->
@@ -3321,14 +3322,18 @@
 
     <!-- ===== 引导弹窗 — 带鼠标指示器 ===== -->
     <div class="pop-mask" id="entryPop">
+        <!-- 鼠标指示器（跟随鼠标） -->
         <div class="pop-cursor" id="popCursor"></div>
+
         <div class="pop-box">
+            <!-- 装饰星尘粒子 -->
             <span class="pop-sparkle"></span>
             <span class="pop-sparkle"></span>
             <span class="pop-sparkle"></span>
             <span class="pop-sparkle"></span>
             <span class="pop-sparkle"></span>
             <span class="pop-sparkle"></span>
+
             <div class="pop-text">
                 <span class="star-icon">✦</span>
                 亲爱的雨婷，你永远是最棒最棒最棒的，屏幕前的你愿意和我一起来看看这个雨婷吗
@@ -3587,6 +3592,7 @@
                     </form>
                 </div>
                 <div class="msg-right">
+                    <!-- ★ 留言框 — 左上角星星装饰已通过 CSS ::before 实现 ★ -->
                     <div class="msg-work-card">
                         <div class="msg-work-text">
                             <h3>亲爱的月光石们，欢迎在这里留下想对雨婷说的心里话，或是你与雨婷相遇的温暖小故事。</h3>
@@ -3612,7 +3618,7 @@
     </div>
 
     <!-- ============================================================
-    JavaScript — 所有功能 + 视频兼容降级
+    JavaScript — 所有功能 + 炫酷增强
     ============================================================ -->
     <script>
         // ============================================================
@@ -3635,58 +3641,6 @@
                     });
                 }
             }
-        })();
-
-        // ============================================================
-        // ★ 新增：视频兼容性降级处理
-        // ============================================================
-        (function() {
-            var video = document.getElementById('bgVideo');
-            if (!video) return;
-
-            var fallbackImage = 'https://ltiilggogjtcljeyovvt.supabase.co/storage/v1/object/public/yt_1/fallback.jpg';
-            var fallbackColor = '#060210';
-            var isVideoWorking = false;
-
-            video.addEventListener('error', function(e) {
-                console.warn('视频加载失败，启用降级方案', e);
-                applyFallback();
-            });
-
-            setTimeout(function() {
-                if (video.paused || video.readyState < 2 || video.played.length === 0) {
-                    console.warn('视频未正常播放，启用降级方案');
-                    applyFallback();
-                } else {
-                    isVideoWorking = true;
-                    console.log('✅ 视频播放正常');
-                }
-            }, 3000);
-
-            function applyFallback() {
-                video.style.display = 'none';
-                var body = document.body;
-                var img = new Image();
-                img.onload = function() {
-                    body.style.backgroundImage = 'url(' + fallbackImage + ')';
-                    body.style.backgroundSize = 'cover';
-                    body.style.backgroundPosition = 'center';
-                    body.style.backgroundRepeat = 'no-repeat';
-                    body.style.backgroundColor = fallbackColor;
-                };
-                img.onerror = function() {
-                    body.style.backgroundColor = fallbackColor;
-                    body.style.backgroundImage = 'none';
-                };
-                img.src = fallbackImage;
-                video.style.zIndex = '-999';
-            }
-
-            window.addEventListener('load', function() {
-                if (!isVideoWorking && (video.paused || video.readyState < 2)) {
-                    applyFallback();
-                }
-            });
         })();
 
         // ============================================================
@@ -3732,12 +3686,41 @@
                 mouseX = e.clientX;
                 mouseY = e.clientY;
                 isMouseActive = true;
+                var glow = document.getElementById('glow');
+                if (glow) {
+                    glow.style.left = mouseX + 'px';
+                    glow.style.top = mouseY + 'px';
+                    glow.classList.add('active');
+                    clearTimeout(glow._timer);
+                    glow._timer = setTimeout(function() {
+                        glow.classList.remove('active');
+                    }, 200);
+                }
             });
             document.addEventListener('mouseleave', function() {
                 isMouseActive = false;
                 mouseX = -9999;
                 mouseY = -9999;
             });
+
+            document.addEventListener('touchmove', function(e) {
+                var touch = e.touches[0];
+                if (touch) {
+                    mouseX = touch.clientX;
+                    mouseY = touch.clientY;
+                    isMouseActive = true;
+                    var glow = document.getElementById('glow');
+                    if (glow) {
+                        glow.style.left = mouseX + 'px';
+                        glow.style.top = mouseY + 'px';
+                        glow.classList.add('active');
+                        clearTimeout(glow._timer);
+                        glow._timer = setTimeout(function() {
+                            glow.classList.remove('active');
+                        }, 300);
+                    }
+                }
+            }, { passive: true });
 
             function draw() {
                 ctx.clearRect(0, 0, width, height);
@@ -3839,10 +3822,36 @@
 
             if (!popMask || !popCursor) return;
 
+            // 鼠标移动更新指示器位置
             document.addEventListener('mousemove', function(e) {
                 if (!isVisible) return;
                 var x = e.clientX;
                 var y = e.clientY;
+                popCursor.style.left = x + 'px';
+                popCursor.style.top = y + 'px';
+
+                // 检测是否悬停在按钮上
+                var isHover = false;
+                for (var i = 0; i < btns.length; i++) {
+                    var rect = btns[i].getBoundingClientRect();
+                    if (x >= rect.left && x <= rect.right && y >= rect.top && y <= rect.bottom) {
+                        isHover = true;
+                        break;
+                    }
+                }
+                if (isHover) {
+                    popCursor.classList.add('hover-btn');
+                } else {
+                    popCursor.classList.remove('hover-btn');
+                }
+            });
+
+            // 触摸设备支持
+            document.addEventListener('touchmove', function(e) {
+                var touch = e.touches[0];
+                if (!touch) return;
+                var x = touch.clientX;
+                var y = touch.clientY;
                 popCursor.style.left = x + 'px';
                 popCursor.style.top = y + 'px';
 
@@ -3859,8 +3868,9 @@
                 } else {
                     popCursor.classList.remove('hover-btn');
                 }
-            });
+            }, { passive: true });
 
+            // 弹窗关闭时隐藏指示器
             var btn1 = document.getElementById('btn1');
             var btn2 = document.getElementById('btn2');
 
@@ -3872,6 +3882,7 @@
             btn1.addEventListener('click', hideCursor);
             btn2.addEventListener('click', hideCursor);
 
+            // 如果用户点击弹窗外部（遮罩）关闭弹窗
             popMask.addEventListener('click', function(e) {
                 if (e.target === popMask) {
                     hideCursor();
@@ -3881,7 +3892,7 @@
         })();
 
         // ============================================================
-        // 3. 弹窗 — 按钮星尘粒子
+        // 3. 弹窗 — 按钮星尘粒子（保留）
         // ============================================================
         var popMask = document.getElementById('entryPop');
 
@@ -3898,8 +3909,8 @@
                 var ty = Math.sin(angle) * distance - 30;
                 var size = 3 + Math.random() * 10;
                 sparkle.style.cssText =
-                    'left:' + x + 'px;top:' + y + 'px;--tx:' + tx + 'px;--ty:' + ty +
-                    'px;width:' + size + 'px;height:' + size +
+                    'left:' + x + 'px;top:' + y + 'px;--tx:' + tx + 'px;--ty:' + ty + 'px;width:' + size + 'px;height:' +
+                    size +
                     'px;background:radial-gradient(circle,hsl(' + (260 + Math.random() * 40) +
                     ',80%,70%),transparent);';
                 sparkle.style.animationDuration = (0.5 + Math.random() * 0.5) + 's';
@@ -3918,6 +3929,7 @@
         btn1.addEventListener('mouseenter', function(e) { addBtnSparkle(e, this); });
         btn2.addEventListener('mouseenter', function(e) { addBtnSparkle(e, this); });
 
+        // 保留原有点击事件，同时关闭弹窗
         btn1.addEventListener('click', function() {
             popMask.style.display = 'none';
             document.body.style.transition = 'box-shadow 0.5s ease';
@@ -3969,7 +3981,7 @@
         });
 
         // ============================================================
-        // 6. 炫酷光标 + 拖尾
+        // 6. 炫酷光标 + 拖尾（保留）
         // ============================================================
         (function() {
             var cursor = document.getElementById('customCursor');
